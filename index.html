@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rumah Makan Setia Rasa - Setia Karena Rasa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --warna-merah: #c0392b; /* Merah yang kuat tapi elegan */
+            --warna-kuning: #f1c40f; /* Kuning cerah sebagai aksen */
+            --warna-hijau: #27ae60; /* Hijau segar */
+            --warna-dasar: #2c3e50; /* Abu-abu gelap untuk teks */
+            --latar-belakang: #fdfdfd; /* Putih gading untuk latar */
+            --font-judul: 'Playfair Display', serif;
+            --font-isi: 'Roboto', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-isi);
+            margin: 0;
+            padding: 0;
+            background-color: var(--latar-belakang);
+            color: var(--warna-dasar);
+        }
+
+        /* Mencegah scroll saat menu mobile terbuka */
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        /* Header & Navigasi */
+        .header {
+            background-color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: var(--font-judul);
+            font-size: 1.8rem;
+            color: var(--warna-merah);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Jarak antara logo dan teks */
+        }
+
+        .logo img {
+            height: 40px; /* Sesuaikan tinggi logo */
+            width: auto;
+        }
+
+        .navigasi a {
+            margin-left: 25px;
+            text-decoration: none;
+            color: var(--warna-dasar);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .navigasi a:hover, .navigasi a.active {
+            color: var(--warna-merah);
+        }
+
+        .tombol-pesan-nav {
+            background-color: var(--warna-hijau);
+            color: white !important;
+            padding: 8px 16px;
+            border-radius: 5px;
+            margin-left: 25px;
+            transition: background-color 0.3s ease;
+        }
+        .tombol-pesan-nav:hover {
+            background-color: #219d55;
+        }
+
+        /* Hamburger Menu (untuk mobile) */
+        .hamburger-menu {
+            display: none; /* Sembunyi di desktop */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 2rem;
+            height: 2rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 101; /* Pastikan di atas overlay */
+        }
+
+        .hamburger-menu span {
+            width: 2rem;
+            height: 0.25rem;
+            background: var(--warna-dasar);
+            border-radius: 10px;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            transform-origin: 1px;
+        }
+
+        /* Animasi Hamburger menjadi 'X' */
+        .hamburger-menu.open span:nth-child(1) { transform: rotate(45deg); }
+        .hamburger-menu.open span:nth-child(2) { opacity: 0; transform: translateX(20px); }
+        .hamburger-menu.open span:nth-child(3) { transform: rotate(-45deg); }
+
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 80vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1887&auto=format&fit=crop') no-repeat center center/cover;
+            color: white;
+            padding: 0 2rem;
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-judul);
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .tombol-cta {
+            background-color: var(--warna-merah);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .tombol-cta:hover {
+            background-color: #a52d22;
+        }
+
+        /* Section Styling */
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        h2.judul-section {
+            font-family: var(--font-judul);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2.judul-section::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 4px;
+            background-color: var(--warna-kuning);
+            bottom: -10px;
+            left: 20%;
+        }
+
+        .deskripsi-section {
+            font-size: 1.1rem;
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        /* Menu Section */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            text-align: left;
+        }
+
+        .menu-kategori {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .menu-kategori h3 {
+            font-family: var(--font-judul);
+            font-size: 1.8rem;
+            color: var(--warna-merah);
+            border-bottom: 2px solid var(--warna-kuning);
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .menu-kategori ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            column-count: 2;
+            column-gap: 2rem;
+        }
+
+        .menu-kategori li {
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #eee;
+            text-align: left;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .menu-info {
+            padding: 1.5rem;
+        }
+
+        .menu-info h3 {
+            font-family: var(--font-judul);
+            font-size: 1.5rem;
+            margin: 0 0 0.5rem 0;
+            color: var(--warna-dasar);
+        }
+
+        .menu-info p {
+            margin: 0 0 1rem 0;
+            color: #666;
+        }
+
+        .harga {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--warna-hijau);
+        }
+
+        @media (max-width: 820px) { /* Breakpoint untuk tablet dan mobile */
+            .header {
+                padding: 1rem 1.5rem;
+            }
+
+            .navigasi {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 1rem;
+                background: rgba(253, 253, 253, 0.95);
+                backdrop-filter: blur(8px);
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                transform: translateY(-100%);
+                transition: transform 0.3s ease-in-out;
+                z-index: 100;
+            }
+
+            .navigasi.open {
+                transform: translateY(0);
+            }
+
+            .navigasi a {
+                margin: 0;
+                font-size: 1.5rem;
+                padding: 0.5rem;
+            }
+
+            .tombol-pesan-nav { margin: 1rem 0 0 0; }
+            .hamburger-menu { display: flex; }
+
+            .hero-content h1 { font-size: 2.5rem; }
+            .hero-content p { font-size: 1.1rem; }
+            .container { padding: 3rem 1.5rem; }
+
+            .menu-kategori ul {
+                column-count: 1;
+            }
+
+            .item-pilihan input[type="number"] {
+                padding: 5px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Form Pemesanan */
+        #form-pesan-online {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            text-align: left;
+            max-width: 800px;
+            margin: 2rem auto 0;
+        }
+
+        .form-grup {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-grup label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-grup input,
+        .form-grup textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: var(--font-isi);
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .menu-pilihan {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .item-pilihan {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-pilihan input[type="checkbox"] {
+            width: auto;
+        }
+
+        .item-pilihan input[type="number"] {
+            width: 60px;
+            display: none;
+        }
+
+        .tombol-kirim {
+            width: 100%;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Map Section */
+        .map-container {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-top: 2.5rem;
+            height: 400px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--warna-dasar);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="#hero" class="logo">
+            <!-- GANTI URL DI BAWAH DENGAN PATH FILE LOGO ANDA -->
+            <!-- Contoh: <img src="images/logo.png" alt="Logo Setia Rasa"> -->
+            <img src="setiarasa-logo-removebg-preview.png" alt="logo">
+            <span>Setia Rasa</span>
+        </a>
+        <nav class="navigasi">
+            <a href="#hero" class="active">Beranda</a>
+            <a href="#menu">Menu</a>
+            <a href="#tentang">Tentang Kami</a>
+            <a href="#kontak">Kontak</a>
+            <a href="#pesan-online" class="tombol-pesan-nav">Pesan Online</a>
+        </nav>
+        <button class="hamburger-menu" aria-label="Buka menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <h1>Selamat Datang di Rumah Makan Setia Rasa</h1>
+            <p>"Setia Karena Rasa" - Menyajikan hidangan otentik dengan resep turun-temurun yang penuh cinta.</p>
+            <a href="#menu" class="tombol-cta">Lihat Menu Spesial</a>
+        </div>
+    </section>
+
+    <main>
+        <section id="menu" class="container">
+            <h2 class="judul-section">Menu Lengkap Kami</h2>
+            <p class="deskripsi-section">Setiap hidangan kami dibuat dari bahan-bahan segar pilihan untuk menjamin kualitas dan kepuasan Anda.</p>
+            <div class="menu-grid">
+                <!-- Menu akan di-generate oleh JavaScript -->
+            </div>
+        </section>
+
+        <section id="tentang" class="container">
+            <h2 class="judul-section">Cerita Kami</h2>
+            <p class="deskripsi-section">Berawal dari dapur sederhana milik Bapak, "Setia Rasa" lahir dari keinginan untuk berbagi kelezatan masakan rumahan yang otentik. Kami percaya bahwa makanan yang baik berasal dari hati. Selamat menikmati!</p>
+        </section>
+
+        <section id="kontak" class="container">
+            <h2 class="judul-section">Kunjungi Kami</h2>
+            <p class="deskripsi-section">Kami tunggu kedatangan Anda untuk mencicipi langsung kelezatan menu kami. Pesan antar juga tersedia!</p>
+            <p><strong>Alamat:</strong> Perumahan Taman Batu Aji Indah 2, Blok N No. 28, Sagulung, Kota Batam, Kepulauan Riau 29444</p>
+            <p><strong>WhatsApp:</strong> 0857-6757-1976</p>
+            <p><strong>Jam Buka:</strong> Setiap Hari, 16:00 - 00:00</p>
+
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.076019974853!2d103.9558056749654!3d1.045361198941782!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d98e863e86157b%3A0x13a45e851a1c400!2sTaman%20Batu%20Aji%20Indah%202!5e0!3m2!1sen!2sid!4v1716445695123!5m2!1sen!2sid" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </section>
+
+        <section id="pesan-online" class="container">
+            <h2 class="judul-section">Pesan Online</h2>
+            <p class="deskripsi-section">Isi formulir di bawah ini untuk memesan hidangan favorit Anda. Kami akan segera menyiapkan pesanan Anda.</p>
+
+            <form id="form-pesan-online">
+                <div class="form-grup">
+                    <label for="nama">Nama Lengkap</label>
+                    <input type="text" id="nama" name="nama" placeholder="Masukkan nama Anda" required>
+                </div>
+                <div class="form-grup">
+                    <label for="telepon">Nomor WhatsApp</label>
+                    <input type="tel" id="telepon" name="telepon" placeholder="Contoh: 081234567890" required>
+                </div>
+                <div class="form-grup">
+                    <label for="alamat">Alamat Pengiriman</label>
+                    <textarea id="alamat" name="alamat" rows="3" placeholder="Masukkan alamat lengkap Anda" required></textarea>
+                </div>
+
+                <div class="form-grup">
+                    <label>Pilih Menu Anda</label>
+                    <div class="menu-pilihan">
+                        <!-- Pilihan menu akan di-generate oleh JavaScript -->
+                    </div>
+                </div>
+
+                <div class="form-grup">
+                    <label for="catatan">Catatan Tambahan</label>
+                    <textarea id="catatan" name="catatan" rows="2" placeholder="Contoh: Nasi goreng tidak pedas"></textarea>
+                </div>
+
+                <div class="form-grup" style="text-align: right; font-size: 1.5rem; font-weight: bold; margin-top: 2rem; color: var(--warna-hijau);">
+                    Total: <span id="total-harga">Rp 0</span>
+                </div>
+
+                <button type="submit" class="tombol-cta tombol-kirim">
+                    Kirim Pesanan via WhatsApp
+                </button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Rumah Makan Setia Rasa. Dibuat dengan ❤️.</p>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- Data Menu (Nama & Harga) ---
+        // Anda bisa mengubah harga di sini
+        const menuData = {
+            "MAKANAN": [
+                { name: "Ayam Kremes + Nasi", price: 20000 }, { name: "Ayam Kremes", price: 17000 },
+                { name: "Ayam Geprek + Nasi", price: 20000 }, { name: "Ayam Geprek", price: 17000 },
+                { name: "Ayam Cabe Ijo + Nasi", price: 21000 }, { name: "Ayam Cabe Ijo", price: 18000 },
+                { name: "Ayam Penyet Kremes + Nasi", price: 20000 }, { name: "Ayam Penyet Kremes", price: 17000 },
+                { name: "Ayam Penyet Cabe Ijo + Nasi", price: 21000 }, { name: "Ayam Penyet Cabe Ijo", price: 18000 },
+                { name: "Ayam Penyet Cabe Geprek + Nasi", price: 21000 }, { name: "Ayam Penyet Cabe Geprek", price: 18000 },
+                { name: "3T + Nasi", price: 18000 }, { name: "3T", price: 15000 },
+                { name: "3T Cabe Ijo + Nasi", price: 19000 }, { name: "3T Cabe Ijo", price: 16000 },
+                { name: "3T Cabe Geprek + Nasi", price: 19000 }, { name: "3T Cabe Geprek", price: 16000 },
+                { name: "Pecel Lele + Nasi", price: 18000 }, { name: "Pecel Lele", price: 15000 },
+                { name: "Pecel Lele Cabe Ijo + Nasi", price: 19000 }, { name: "Pecel Lele Cabe Ijo", price: 16000 },
+                { name: "Pecel Lele Geprek + Nasi", price: 19000 }, { name: "Pecel Lele Geprek", price: 16000 },
+            ],
+            "NASI & MIE": [
+                { name: "Nasi Putih", price: 5000 }, { name: "Nasi Goreng", price: 15000 },
+                { name: "Nasi Goreng Telor Dadar / Ceplok", price: 18000 }, { name: "Nasi Goreng Mawut", price: 17000 },
+                { name: "Nasi Goreng Mawut + Telor", price: 20000 }, { name: "Nasi Goreng Teri", price: 18000 },
+                { name: "Nasi Goreng Seafood", price: 22000 }, { name: "Nasi Goreng Mie", price: 16000 },
+                { name: "Nasi Goreng Bakso", price: 18000 }, { name: "Nasi Goreng Sosis", price: 18000 },
+                { name: "Mie Goreng", price: 15000 }, { name: "Mie Goreng Basah", price: 15000 },
+                { name: "Mie Rebus", price: 15000 }, { name: "Kwetiau Goreng", price: 16000 },
+                { name: "Kwetiau Goreng Basah", price: 16000 }, { name: "Kwetiau Kuah", price: 16000 },
+                { name: "Bihun Goreng", price: 15000 }, { name: "Bihun Goreng Basah", price: 15000 },
+                { name: "Bihun Kuah", price: 15000 },
+            ],
+            "SAYUR & SOP": [
+                { name: "Cap Cay", price: 15000 }, { name: "Cap Cay + Ayam", price: 20000 },
+                { name: "Cap Cay + Seafood", price: 22000 }, { name: "Sop Ayam", price: 18000 },
+                { name: "Sop Tulang", price: 20000 }, { name: "Sop Telur", price: 12000 },
+                { name: "Sop Sayur", price: 10000 }, { name: "Cah Kangkung", price: 12000 },
+            ],
+            "BEBEK": [
+                { name: "Bebek Goreng", price: 28000 }, { name: "Bebek Cabe Ijo", price: 30000 },
+                { name: "Bebek Cabe Geprek", price: 30000 },
+            ],
+            "MINUMAN": [
+                { name: "Teh Obeng", price: 4000 }, { name: "Teh O", price: 3000 },
+                { name: "Es Jeruk", price: 8000 }, { name: "Jeruk Hangat", price: 7000 },
+                { name: "Milo Dingin", price: 8000 }, { name: "Milo Hangat", price: 7000 },
+                { name: "Aneka Juice", price: 10000 },
+            ]
+        };
+
+        // --- Generate Menu Display & Order Form ---
+        const menuGrid = document.querySelector('.menu-grid');
+        const menuPilihan = document.querySelector('.menu-pilihan');
+        let itemIdCounter = 1;
+
+        for (const kategori in menuData) {
+            const kategoriDiv = document.createElement('div');
+            kategoriDiv.className = 'menu-kategori';
+            const kategoriJudul = document.createElement('h3');
+            kategoriJudul.textContent = kategori;
+            kategoriDiv.appendChild(kategoriJudul);
+            const ul = document.createElement('ul');
+            
+            menuData[kategori].forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} - Rp ${item.price.toLocaleString('id-ID')}`;
+                ul.appendChild(li);
+
+                const itemPilihanDiv = document.createElement('div');
+                itemPilihanDiv.className = 'item-pilihan';
+                const uniqueId = `item${itemIdCounter++}`;
+                itemPilihanDiv.innerHTML = `
+                    <input type="checkbox" id="${uniqueId}" value="${item.name}" data-price="${item.price}">
+                    <label for="${uniqueId}">${item.name}</label>
+                    <input type="number" min="1" value="1">
+                `;
+                menuPilihan.appendChild(itemPilihanDiv);
+            });
+
+            kategoriDiv.appendChild(ul);
+            menuGrid.appendChild(kategoriDiv);
+        }
+
+        // --- Hamburger Menu Logic ---
+        const hamburger = document.querySelector('.hamburger-menu');
+        const navMenu = document.querySelector('.navigasi');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('open');
+            navMenu.classList.toggle('open');
+            document.body.classList.toggle('no-scroll');
+        });
+        document.querySelectorAll('.navigasi a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                navMenu.classList.remove('open');
+                document.body.classList.remove('no-scroll');
+            });
+        });
+
+        // --- Total Calculation Logic ---
+        const totalHargaEl = document.getElementById('total-harga');
+        function calculateTotal() {
+            let total = 0;
+            const checkedItems = document.querySelectorAll('.item-pilihan input[type="checkbox"]:checked');
+            checkedItems.forEach(item => {
+                const price = parseFloat(item.dataset.price);
+                const quantity = parseInt(item.parentElement.querySelector('input[type="number"]').value) || 1;
+                total += price * quantity;
+            });
+            totalHargaEl.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        // --- Event Listeners for Form ---
+        menuPilihan.addEventListener('change', function(e) {
+            if (e.target.type === 'checkbox') {
+                const inputJumlah = e.target.parentElement.querySelector('input[type="number"]');
+                inputJumlah.style.display = e.target.checked ? 'inline-block' : 'none';
+                if (!e.target.checked) { inputJumlah.value = 1; } // Reset jumlah jika di-uncheck
+                calculateTotal();
+            }
+        });
+        menuPilihan.addEventListener('input', function(e) {
+            if (e.target.type === 'number') {
+                calculateTotal();
+            }
+        });
+
+        // --- Form Submission to WhatsApp ---
+        const orderForm = document.getElementById('form-pesan-online');
+        orderForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const nomorWhatsApp = '6285767571976'; 
+            const nama = document.getElementById('nama').value;
+            const telepon = document.getElementById('telepon').value;
+            const alamat = document.getElementById('alamat').value;
+            const catatan = document.getElementById('catatan').value;
+            const totalHarga = document.getElementById('total-harga').textContent;
+
+            let pesanan = '';
+            const itemsPilihan = document.querySelectorAll('.item-pilihan input[type="checkbox"]:checked');
+
+            if (itemsPilihan.length === 0) {
+                alert('Silakan pilih minimal satu menu.');
+                return;
+            }
+
+            itemsPilihan.forEach(item => {
+                const jumlah = item.parentElement.querySelector('input[type="number"]').value;
+                pesanan += `- ${item.value} (x${jumlah})\n`;
+            });
+
+            const pesanWhatsApp = `
+Halo *Rumah Makan Setia Rasa*, saya mau pesan:
+
+*Nama:* ${nama}
+*No. HP:* ${telepon}
+*Alamat:* ${alamat}
+
+*Pesanan:*
+${pesanan}
+*Catatan:* ${catatan || '-'}
+*--------------------------*
+*Total Perkiraan:* ${totalHarga}
+
+Mohon konfirmasi ketersediaan, total akhir beserta ongkos kirimnya. Terima kasih!
+            `.trim();
+
+            const urlWhatsApp = `https://wa.me/${nomorWhatsApp}?text=${encodeURIComponent(pesanWhatsApp)}`;
+            window.open(urlWhatsApp, '_blank');
+        });
+    });
+    </script>
+</body>
+</html>
