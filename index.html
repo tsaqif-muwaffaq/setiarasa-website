@@ -13,9 +13,24 @@
             --warna-kuning: #f1c40f; /* Kuning cerah sebagai aksen */
             --warna-hijau: #27ae60; /* Hijau segar */
             --warna-dasar: #2c3e50; /* Abu-abu gelap untuk teks */
+            --warna-sekunder: #555; /* Abu-abu lebih terang untuk sub-teks */
             --latar-belakang: #fdfdfd; /* Putih gading untuk latar */
+            --latar-elemen: white; /* Latar untuk card, header, dll. */
+            --latar-alternatif: #f9f9f9; /* Latar untuk seksi testimoni */
+            --bayangan: rgba(0,0,0,0.1);
+            --border-warna: #eee;
             --font-judul: 'Cormorant Garamond', serif;
             --font-isi: 'Inter', sans-serif;
+        }
+
+        body.dark-mode {
+            --warna-dasar: #ecf0f1;
+            --warna-sekunder: #bdc3c7;
+            --latar-belakang: #23272f;
+            --latar-elemen: #2c3e50;
+            --latar-alternatif: #282c34;
+            --bayangan: rgba(0,0,0,0.4);
+            --border-warna: #444;
         }
 
         html {
@@ -37,12 +52,12 @@
 
         /* Header & Navigasi */
         .header {
-            background-color: white;
+            background-color: var(--latar-elemen);
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px var(--bayangan);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -136,6 +151,44 @@
         .hamburger-menu.open span:nth-child(2) { opacity: 0; transform: translateX(20px); }
         .hamburger-menu.open span:nth-child(3) { transform: rotate(-45deg); }
 
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Theme Switcher */
+        .theme-switcher input {
+            display: none;
+        }
+
+        .theme-switcher label {
+            cursor: pointer;
+            display: block;
+            width: 50px;
+            height: 26px;
+            background-color: #ccc;
+            border-radius: 13px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        body.dark-mode .theme-switcher label {
+            background-color: var(--warna-hijau);
+        }
+
+        .theme-switcher label span {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background-color: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .theme-switcher input:checked + label span { transform: translateX(24px); }
+
 
         /* Hero Section */
         .hero {
@@ -207,7 +260,7 @@
 
         .deskripsi-section {
             font-size: 1.1rem;
-            color: #555;
+            color: var(--warna-sekunder);
             max-width: 700px;
             margin: 0 auto 3rem;
         }
@@ -221,10 +274,10 @@
         }
 
         .menu-kategori {
-            background: white;
+            background: var(--latar-elemen);
             padding: 2rem;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 15px var(--bayangan);
         }
 
         .menu-kategori h3 {
@@ -247,21 +300,21 @@
 
         .menu-kategori li {
             padding: 0.5rem 0;
-            border-bottom: 1px dashed #eee;
+            border-bottom: 1px dashed var(--border-warna);
             text-align: left;
         }
 
         .menu-item {
-            background: white;
+            background: var(--latar-elemen);
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 15px var(--bayangan);
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .menu-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            box-shadow: 0 8px 25px color-mix(in srgb, var(--bayangan) 120%, transparent);
         }
 
         .menu-item img {
@@ -283,7 +336,7 @@
 
         .menu-info p {
             margin: 0 0 1rem 0;
-            color: #666;
+            color: var(--warna-sekunder);
         }
 
         .harga {
@@ -303,7 +356,7 @@
                 justify-content: center;
                 align-items: center;
                 gap: 1rem;
-                background: rgba(253, 253, 253, 0.95);
+                background: color-mix(in srgb, var(--latar-elemen) 95%, transparent);
                 backdrop-filter: blur(8px);
                 position: fixed;
                 top: 0;
@@ -326,6 +379,9 @@
             }
 
             .tombol-pesan-nav { margin: 1rem 0 0 0; }
+            .header-controls {
+                z-index: 1001;
+            }
             .hamburger-menu { display: flex; }
 
             .hero-content h1 { font-size: 2.5rem; }
@@ -344,10 +400,10 @@
 
         /* Form Pemesanan */
         #form-pesan-online {
-            background-color: white;
+            background-color: var(--latar-elemen);
             padding: 2rem;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 15px var(--bayangan);
             text-align: left;
             max-width: 800px;
             margin: 2rem auto 0;
@@ -367,11 +423,13 @@
         .form-grup textarea {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-warna);
             border-radius: 5px;
             font-family: var(--font-isi);
             font-size: 1rem;
             box-sizing: border-box;
+            background-color: var(--latar-belakang);
+            color: var(--warna-dasar);
         }
 
         .menu-pilihan {
@@ -405,7 +463,7 @@
         .map-container {
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px var(--bayangan);
             margin-top: 2.5rem;
             height: 400px;
         }
@@ -414,6 +472,10 @@
             width: 100%;
             height: 100%;
             border: 0;
+        }
+
+        body.dark-mode .map-container iframe {
+            filter: invert(90%) hue-rotate(180deg);
         }
 
         /* Floating WhatsApp Button */
@@ -447,7 +509,7 @@
 
         /* Testimoni Section */
         #testimoni {
-            background-color: #f9f9f9; /* Sedikit berbeda dari latar utama */
+            background-color: var(--latar-alternatif);
         }
 
         .testimoni-grid {
@@ -459,10 +521,10 @@
         }
 
         .testimoni-card {
-            background: white;
+            background: var(--latar-elemen);
             padding: 2rem;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            box-shadow: 0 4px 15px color-mix(in srgb, var(--bayangan) 70%, transparent);
             display: flex;
             flex-direction: column;
         }
@@ -475,7 +537,7 @@
 
         .testimoni-teks {
             font-style: italic;
-            color: #555;
+            color: var(--warna-sekunder);
             flex-grow: 1;
             margin: 0 0 1rem 0;
         }
@@ -489,10 +551,15 @@
 
         /* Footer */
         .footer {
-            background-color: var(--warna-dasar);
-            color: white;
+            background-color: var(--latar-alternatif);
+            color: var(--warna-dasar);
             text-align: center;
             padding: 2rem;
+        }
+
+        body.dark-mode .footer {
+            background-color: var(--latar-elemen);
+            color: var(--warna-dasar);
         }
 
         .footer p {
@@ -547,11 +614,17 @@
             <a href="#kontak">Kontak</a>
             <a href="#pesan-online" class="tombol-pesan-nav">Pesan Online</a>
         </nav>
-        <button class="hamburger-menu" aria-label="Buka menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+        <div class="header-controls">
+            <div class="theme-switcher">
+                <input type="checkbox" id="theme-toggle">
+                <label for="theme-toggle"><span></span></label>
+            </div>
+            <button class="hamburger-menu" aria-label="Buka menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
     </header>
 
     <section id="hero" class="hero">
@@ -750,6 +823,35 @@
             kategoriDiv.appendChild(ul);
             menuGrid.appendChild(kategoriDiv);
         }
+
+        // --- Dark/Light Mode Toggle ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Function to apply theme
+        const applyTheme = (theme) => {
+            if (theme === 'dark') {
+                body.classList.add('dark-mode');
+                themeToggle.checked = true;
+            } else {
+                body.classList.remove('dark-mode');
+                themeToggle.checked = false;
+            }
+        };
+
+        // Check for saved theme in localStorage
+        const savedTheme = localStorage.getItem('theme');
+        // Check for system preference
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        // Apply saved theme or system preference, default to light
+        applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+
+        themeToggle.addEventListener('change', () => {
+            const newTheme = themeToggle.checked ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        });
 
         // --- Hamburger Menu Logic ---
         const hamburger = document.querySelector('.hamburger-menu');
