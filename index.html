@@ -69,10 +69,30 @@
             color: var(--warna-dasar);
             font-weight: 500;
             transition: color 0.3s ease;
+            position: relative; /* Diperlukan untuk animasi garis bawah */
+            padding-bottom: 8px; /* Beri ruang untuk garis animasi */
         }
 
         .navigasi a:hover, .navigasi a.active {
             color: var(--warna-merah);
+        }
+
+        /* Animasi Garis Bawah Keren untuk Link Navigasi */
+        .navigasi a:not(.tombol-pesan-nav)::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: var(--warna-merah);
+            bottom: 0;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: center; /* Animasi dari tengah ke samping */
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .navigasi a:not(.tombol-pesan-nav):hover::after, .navigasi a:not(.tombol-pesan-nav).active::after {
+            transform: scaleX(1);
         }
 
         .tombol-pesan-nav {
@@ -392,6 +412,77 @@
             border: 0;
         }
 
+        /* Floating WhatsApp Button */
+        .whatsapp-floating-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #25D366; /* Official WhatsApp Green */
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1001; /* Higher than header */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .whatsapp-floating-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+
+        .whatsapp-floating-btn svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        /* Testimoni Section */
+        #testimoni {
+            background-color: #f9f9f9; /* Sedikit berbeda dari latar utama */
+        }
+
+        .testimoni-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            text-align: left;
+        }
+
+        .testimoni-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .rating {
+            font-size: 1.5rem;
+            color: var(--warna-kuning);
+            margin-bottom: 1rem;
+        }
+
+        .testimoni-teks {
+            font-style: italic;
+            color: #555;
+            flex-grow: 1;
+            margin: 0 0 1rem 0;
+        }
+
+        .testimoni-penulis {
+            font-weight: bold;
+            color: var(--warna-dasar);
+            text-align: right;
+            margin: 0;
+        }
+
         /* Footer */
         .footer {
             background-color: var(--warna-dasar);
@@ -418,6 +509,7 @@
             <a href="#hero" class="active">Beranda</a>
             <a href="#menu">Menu</a>
             <a href="#tentang">Tentang Kami</a>
+            <a href="#testimoni">Testimoni</a>
             <a href="#kontak">Kontak</a>
             <a href="#pesan-online" class="tombol-pesan-nav">Pesan Online</a>
         </nav>
@@ -447,7 +539,29 @@
 
         <section id="tentang" class="container">
             <h2 class="judul-section">Cerita Kami</h2>
-            <p class="deskripsi-section">Berawal dari dapur sederhana milik Bapak, "Setia Rasa" lahir dari keinginan untuk berbagi kelezatan masakan rumahan yang otentik. Kami percaya bahwa makanan yang baik berasal dari hati. Selamat menikmati!</p>
+            <p class="deskripsi-section">Setia Rasa hadir dari cinta pada masakan rumahan. Kami percaya, rasa terbaik lahir dari bahan segar dan ketulusan. Dari dulu hingga nanti, kami setia menyajikan cita rasa yang membuat Anda kembali lagi</p>
+        </section>
+
+        <section id="testimoni" class="container">
+            <h2 class="judul-section">Kata Mereka</h2>
+            <p class="deskripsi-section">Lihat apa kata pelanggan setia kami tentang hidangan dan pelayanan di Setia Rasa.</p>
+            <div class="testimoni-grid">
+                <div class="testimoni-card">
+                    <div class="rating">★★★★★</div>
+                    <p class="testimoni-teks">"Nasi gorengnya juara! Bumbunya pas, porsinya ngenyangin. Selalu jadi pilihan utama kalau lagi lapar malam-malam. Recommended!"</p>
+                    <p class="testimoni-penulis">- Budi Santoso</p>
+                </div>
+                <div class="testimoni-card">
+                    <div class="rating">★★★★★</div>
+                    <p class="testimoni-teks">"Ayam kremesnya renyah banget, sambelnya juga mantap pedasnya. Pelayanannya cepat dan ramah. Pasti balik lagi!"</p>
+                    <p class="testimoni-penulis">- Siti Aminah</p>
+                </div>
+                <div class="testimoni-card">
+                    <div class="rating">★★★★☆</div>
+                    <p class="testimoni-teks">"Tempatnya sederhana tapi masakannya luar biasa. Sop nya enak banget dan kuahnya seger. Harganya juga sangat terjangkau."</p>
+                    <p class="testimoni-penulis">- Eko Prasetyo</p>
+                </div>
+            </div>
         </section>
 
         <section id="kontak" class="container">
@@ -503,12 +617,21 @@
         </section>
     </main>
 
+    <a href="https://wa.me/6285767571976" id="whatsapp-floating-btn" class="whatsapp-floating-btn" aria-label="Pesan via WhatsApp" target="_blank">
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+        </svg>
+    </a>
+
     <footer class="footer">
         <p>&copy; 2025 Rumah Makan Setia Rasa. Dibuat dengan ❤️.</p>
     </footer>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // --- Konfigurasi ---
+        const NOMOR_WHATSAPP = '6285767571976'; // Ganti dengan nomor WhatsApp tujuan
+
         // --- Data Menu (Nama & Harga) ---
         // Anda bisa mengubah harga di sini
         const menuData = {
@@ -637,7 +760,6 @@
         const orderForm = document.getElementById('form-pesan-online');
         orderForm.addEventListener('submit', function(event) {
             event.preventDefault();
-            const nomorWhatsApp = '6285767571976'; 
             const nama = document.getElementById('nama').value;
             const telepon = document.getElementById('telepon').value;
             const alamat = document.getElementById('alamat').value;
@@ -673,9 +795,16 @@ ${pesanan}
 Mohon konfirmasi ketersediaan, total akhir beserta ongkos kirimnya. Terima kasih!
             `.trim();
 
-            const urlWhatsApp = `https://wa.me/${nomorWhatsApp}?text=${encodeURIComponent(pesanWhatsApp)}`;
+            const urlWhatsApp = `https://wa.me/${NOMOR_WHATSAPP}?text=${encodeURIComponent(pesanWhatsApp)}`;
             window.open(urlWhatsApp, '_blank');
         });
+
+        // --- Floating WhatsApp Button ---
+        const floatingBtn = document.getElementById('whatsapp-floating-btn');
+        if (floatingBtn) {
+            const pesanDefault = "Halo, saya tertarik untuk memesan dari Rumah Makan Setia Rasa.";
+            floatingBtn.href = `https://wa.me/${NOMOR_WHATSAPP}?text=${encodeURIComponent(pesanDefault)}`;
+        }
     });
     </script>
 </body>
