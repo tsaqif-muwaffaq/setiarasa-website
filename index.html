@@ -6,7 +6,7 @@
     <title>Rumah Makan Setia Rasa - Setia Karena Rasa</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --warna-merah: #c0392b; /* Merah yang kuat tapi elegan */
@@ -14,8 +14,8 @@
             --warna-hijau: #27ae60; /* Hijau segar */
             --warna-dasar: #2c3e50; /* Abu-abu gelap untuk teks */
             --latar-belakang: #fdfdfd; /* Putih gading untuk latar */
-            --font-judul: 'Playfair Display', serif;
-            --font-isi: 'Roboto', sans-serif;
+            --font-judul: 'Cormorant Garamond', serif;
+            --font-isi: 'Inter', sans-serif;
         }
 
         html {
@@ -147,6 +147,10 @@
             background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1887&auto=format&fit=crop') no-repeat center center/cover;
             color: white;
             padding: 0 2rem;
+        }
+
+        .hero-content {
+            /* Tidak perlu properti khusus lagi */
         }
 
         .hero-content h1 {
@@ -494,6 +498,36 @@
         .footer p {
             margin: 0;
         }
+
+        .tombol-saran {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 10px 20px;
+            background-color: var(--warna-kuning);
+            color: var(--warna-dasar);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .tombol-saran:hover {
+            background-color: #d4ac0d; /* Kuning lebih gelap */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Animasi saat scroll */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -530,33 +564,33 @@
 
     <main>
         <section id="menu" class="container">
-            <h2 class="judul-section">Menu Lengkap Kami</h2>
-            <p class="deskripsi-section">Setiap hidangan kami dibuat dari bahan-bahan segar pilihan untuk menjamin kualitas dan kepuasan Anda.</p>
+            <h2 class="judul-section animate-on-scroll">Menu Lengkap Kami</h2>
+            <p class="deskripsi-section animate-on-scroll">Setiap hidangan kami dibuat dari bahan-bahan segar pilihan untuk menjamin kualitas dan kepuasan Anda.</p>
             <div class="menu-grid">
                 <!-- Menu akan di-generate oleh JavaScript -->
             </div>
         </section>
 
         <section id="tentang" class="container">
-            <h2 class="judul-section">Cerita Kami</h2>
-            <p class="deskripsi-section">Setia Rasa hadir dari cinta pada masakan rumahan. Kami percaya, rasa terbaik lahir dari bahan segar dan ketulusan. Dari dulu hingga nanti, kami setia menyajikan cita rasa yang membuat Anda kembali lagi</p>
+            <h2 class="judul-section animate-on-scroll">Cerita Kami</h2>
+            <p class="deskripsi-section animate-on-scroll">Setia Rasa hadir dari cinta pada masakan rumahan. Kami percaya, rasa terbaik lahir dari bahan segar dan ketulusan. Dari dulu hingga nanti, kami setia menyajikan cita rasa yang membuat Anda kembali lagi</p>
         </section>
 
         <section id="testimoni" class="container">
-            <h2 class="judul-section">Kata Mereka</h2>
-            <p class="deskripsi-section">Lihat apa kata pelanggan setia kami tentang hidangan dan pelayanan di Setia Rasa.</p>
+            <h2 class="judul-section animate-on-scroll">Kata Mereka</h2>
+            <p class="deskripsi-section animate-on-scroll">Lihat apa kata pelanggan setia kami tentang hidangan dan pelayanan di Setia Rasa.</p>
             <div class="testimoni-grid">
-                <div class="testimoni-card">
+                <div class="testimoni-card animate-on-scroll">
                     <div class="rating">★★★★★</div>
                     <p class="testimoni-teks">"Nasi gorengnya juara! Bumbunya pas, porsinya ngenyangin. Selalu jadi pilihan utama kalau lagi lapar malam-malam. Recommended!"</p>
                     <p class="testimoni-penulis">- Budi Santoso</p>
                 </div>
-                <div class="testimoni-card">
+                <div class="testimoni-card animate-on-scroll" style="transition-delay: 100ms;">
                     <div class="rating">★★★★★</div>
                     <p class="testimoni-teks">"Ayam kremesnya renyah banget, sambelnya juga mantap pedasnya. Pelayanannya cepat dan ramah. Pasti balik lagi!"</p>
                     <p class="testimoni-penulis">- Siti Aminah</p>
                 </div>
-                <div class="testimoni-card">
+                <div class="testimoni-card animate-on-scroll" style="transition-delay: 200ms;">
                     <div class="rating">★★★★☆</div>
                     <p class="testimoni-teks">"Tempatnya sederhana tapi masakannya luar biasa. Sop nya enak banget dan kuahnya seger. Harganya juga sangat terjangkau."</p>
                     <p class="testimoni-penulis">- Eko Prasetyo</p>
@@ -565,22 +599,22 @@
         </section>
 
         <section id="kontak" class="container">
-            <h2 class="judul-section">Kunjungi Kami</h2>
-            <p class="deskripsi-section">Kami tunggu kedatangan Anda untuk mencicipi langsung kelezatan menu kami. Pesan antar juga tersedia!</p>
-            <p><strong>Alamat:</strong> Perumahan Taman Batu Aji Indah 2, Blok N No. 28, Sagulung, Kota Batam, Kepulauan Riau 29444</p>
-            <p><strong>WhatsApp:</strong> 0857-6757-1976</p>
-            <p><strong>Jam Buka:</strong> Setiap Hari, 16:00 - 00:00</p>
+            <h2 class="judul-section animate-on-scroll">Kunjungi Kami</h2>
+            <p class="deskripsi-section animate-on-scroll">Kami tunggu kedatangan Anda untuk mencicipi langsung kelezatan menu kami. Pesan antar juga tersedia!</p>
+            <p class="animate-on-scroll"><strong>Alamat:</strong> Perumahan Taman Batu Aji Indah 2, Blok N No. 28, Sagulung, Kota Batam, Kepulauan Riau 29444</p>
+            <p class="animate-on-scroll"><strong>WhatsApp:</strong> 0857-6757-1976</p>
+            <p class="animate-on-scroll"><strong>Jam Buka:</strong> Setiap Hari, 16:00 - 00:00</p>
 
-            <div class="map-container">
+            <div class="map-container animate-on-scroll">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.1550423712315!2d103.94229!3d1.0447560000000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d98d6b6a25f7ed%3A0x99b387a20aab3153!2sSpesial%20Nasi%20Goreng%20Setia%20Rasa!5e0!3m2!1sid!2sid!4v1756480269081!5m2!1sid!2sid" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </section>
 
         <section id="pesan-online" class="container">
-            <h2 class="judul-section">Pesan Online</h2>
-            <p class="deskripsi-section">Isi formulir di bawah ini untuk memesan hidangan favorit Anda. Kami akan segera menyiapkan pesanan Anda.</p>
+            <h2 class="judul-section animate-on-scroll">Pesan Online</h2>
+            <p class="deskripsi-section animate-on-scroll">Isi formulir di bawah ini untuk memesan hidangan favorit Anda. Kami akan segera menyiapkan pesanan Anda.</p>
 
-            <form id="form-pesan-online">
+            <form id="form-pesan-online" class="animate-on-scroll">
                 <div class="form-grup">
                     <label for="nama">Nama Lengkap</label>
                     <input type="text" id="nama" name="nama" placeholder="Masukkan nama Anda" required>
@@ -625,6 +659,11 @@
 
     <footer class="footer">
         <p>&copy; 2025 Rumah Makan Setia Rasa. Dibuat dengan ❤️.</p>
+        <a href="https://wa.me/6285767571976?text=Halo%20Setia%20Rasa%2C%20saya%20ingin%20memberikan%20saran%2Fkritik."
+           class="tombol-saran"
+           target="_blank">
+            Beri Saran & Kritik
+        </a>
     </footer>
 
     <script>
@@ -686,7 +725,7 @@
 
         for (const kategori in menuData) {
             const kategoriDiv = document.createElement('div');
-            kategoriDiv.className = 'menu-kategori';
+            kategoriDiv.className = 'menu-kategori animate-on-scroll';
             const kategoriJudul = document.createElement('h3');
             kategoriJudul.textContent = kategori;
             kategoriDiv.appendChild(kategoriJudul);
@@ -805,6 +844,28 @@ Mohon konfirmasi ketersediaan, total akhir beserta ongkos kirimnya. Terima kasih
             const pesanDefault = "Halo, saya tertarik untuk memesan dari Rumah Makan Setia Rasa.";
             floatingBtn.href = `https://wa.me/${NOMOR_WHATSAPP}?text=${encodeURIComponent(pesanDefault)}`;
         }
+
+        // --- Animate on Scroll ---
+        const observerOptions = {
+            root: null, // relative to the viewport
+            rootMargin: '0px',
+            threshold: 0.1 // trigger when 10% of the element is visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Animate only once
+                }
+            });
+        }, observerOptions);
+
+        // Find all elements to animate and observe them
+        const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
+        elementsToAnimate.forEach(el => {
+            observer.observe(el);
+        });
     });
     </script>
 </body>
