@@ -418,6 +418,11 @@
                 column-count: 1;
             }
 
+            /* Menyesuaikan form agar menjadi 1 kolom di mobile */
+            .form-menu-items-grid {
+                grid-template-columns: 1fr;
+            }
+
             .item-pilihan input[type="number"] {
                 padding: 5px;
                 font-size: 0.9rem;
@@ -445,6 +450,14 @@
             font-weight: 500;
         }
 
+        /* Memberi jarak dan penekanan pada judul "Pilih Menu Anda" */
+        .form-grup:has(.menu-pilihan) > label {
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
         .form-grup input,
         .form-grup textarea {
             width: 100%;
@@ -459,15 +472,50 @@
         }
 
         .menu-pilihan {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem; /* Jarak antar grup kategori */
+        }
+
+        .form-menu-kategori {
+            /* Menghapus gaya 'card' yang berlebihan agar menyatu dengan form utama */
+            background: none;
+            padding: 0;
+            border: none; /* Hapus border default fieldset */
+            margin: 0; /* Reset margin default fieldset */
+        }
+
+        .form-menu-kategori legend {
+            font-family: var(--font-judul);
+            font-size: 1.8rem;
+            color: var(--warna-merah);
+            /* Hapus properti yang merusak layout fieldset */
+            width: auto;
+            padding-left: 0;
+            margin-bottom: 0.5rem; /* Jarak dari judul ke garis pemisah */
+        }
+
+        .form-menu-items-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
+            /* Membuat kolom responsif yang rapi dan modern */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 0.5rem 2rem; /* Jarak vertikal dan horizontal antar item */
+            /* Pindahkan garis pemisah ke sini agar tidak merusak layout */
+            border-top: 2px solid var(--warna-kuning);
+            padding-top: 1rem; /* Jarak dari garis pemisah ke item menu */
         }
 
         .item-pilihan {
             display: flex;
             align-items: center;
             gap: 10px;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--border-warna);
+        }
+
+        /* Membuat label mengisi ruang agar input jumlah rata kanan */
+        .item-pilihan label {
+            flex-grow: 1;
         }
 
         .item-pilihan input[type="checkbox"] {
@@ -847,27 +895,43 @@
             kategoriDiv.className = 'menu-kategori animate-on-scroll';
             const kategoriJudul = document.createElement('h3');
             kategoriJudul.textContent = kategori;
-            kategoriDiv.appendChild(kategoriJudul);
             const ul = document.createElement('ul');
-            
+
+            // Membuat fieldset untuk setiap kategori di form pemesanan
+            const formKategoriFieldset = document.createElement('fieldset');
+            formKategoriFieldset.className = 'form-menu-kategori';
+            const formKategoriLegend = document.createElement('legend');
+            formKategoriLegend.textContent = kategori;
+            formKategoriFieldset.appendChild(formKategoriLegend);
+
+            // Membuat container untuk item-item di dalam fieldset
+            const itemsContainer = document.createElement('div');
+            itemsContainer.className = 'form-menu-items-grid';
+
             menuData[kategori].forEach(item => {
+                // Generate item untuk tampilan menu utama
                 const li = document.createElement('li');
                 li.textContent = `${item.name} - Rp ${item.price.toLocaleString('id-ID')}`;
                 ul.appendChild(li);
 
+                // Generate item untuk form pemesanan
                 const itemPilihanDiv = document.createElement('div');
                 itemPilihanDiv.className = 'item-pilihan';
                 const uniqueId = `item${itemIdCounter++}`;
                 itemPilihanDiv.innerHTML = `
                     <input type="checkbox" id="${uniqueId}" value="${item.name}" data-price="${item.price}">
                     <label for="${uniqueId}">${item.name}</label>
-                    <input type="number" min="1" value="1">
+                    <input type="number" min="1" value="1" style="display: none;">
                 `;
-                menuPilihan.appendChild(itemPilihanDiv);
+                itemsContainer.appendChild(itemPilihanDiv);
             });
 
+            kategoriDiv.appendChild(kategoriJudul);
             kategoriDiv.appendChild(ul);
             menuGrid.appendChild(kategoriDiv);
+
+            formKategoriFieldset.appendChild(itemsContainer);
+            menuPilihan.appendChild(formKategoriFieldset);
         }
 
         // --- Dark/Light Mode Toggle ---
