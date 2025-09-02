@@ -62,9 +62,9 @@ Vercel akan otomatis build & deploy.
 ---
 
 ## 📞 Kontak  
-📍 **Alamat:** Perumahan Taman Batu Aji Indah 2, Blok N No. 28, Jl. Brigjen Katamso, Sagulung Kota, Sagulung, Sagulung Kota, Kec. Sagulung, Kota Batam, Kepulauan Riau 29444 
-📞 **Telepon:** 085767571976
-📧 **Email:** setiarasa@email.com  
+📍 **Alamat:** Perumahan Taman Batu Aji Indah 2, Blok N No. 28, Jl. Brigjen Katamso, Sagulung Kota, Sagulung,    Sagulung Kota, Kec. Sagulung, Kota Batam, Kepulauan Riau 29444 <br>
+📞 **Telepon:** 085767571976 <br>
+📧 **Email:** setiarasa@email.com <br>  
 🌐 **Website:** [setiarasa-website.vercel.app](https://setiarasa-website.vercel.app)  
 
 ---
