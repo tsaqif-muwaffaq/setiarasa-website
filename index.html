@@ -116,11 +116,17 @@
             color: white !important;
             padding: 8px 16px;
             border-radius: 5px;
-            margin-left: 25px;
-            transition: background-color 0.3s ease;
+            margin-left: 25px; 
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .tombol-pesan-nav:hover {
             background-color: #219d55;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .tombol-pesan-nav:active {
+            transform: translateY(0);
         }
 
         /* Hamburger Menu (untuk mobile) */
@@ -152,6 +158,14 @@
         .hamburger-menu.open span:nth-child(2) { opacity: 0; transform: translateX(20px); }
         .hamburger-menu.open span:nth-child(3) { transform: rotate(-45deg); }
 
+        /* Animasi hover untuk hamburger */
+        .hamburger-menu:not(.open):hover span:nth-child(1) {
+            transform: translateY(-2px);
+        }
+        .hamburger-menu:not(.open):hover span:nth-child(3) {
+            transform: translateY(2px);
+        }
+
         .header-controls {
             display: flex;
             align-items: center;
@@ -170,8 +184,12 @@
             height: 26px;
             background-color: #ccc;
             border-radius: 13px;
-            position: relative;
-            transition: background-color 0.3s;
+            position: relative; 
+            transition: background-color 0.3s, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .theme-switcher label:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 8px var(--bayangan);
         }
 
         body.dark-mode .theme-switcher label {
@@ -226,11 +244,17 @@
             border-radius: 5px;
             text-decoration: none;
             font-weight: 500;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .tombol-cta:hover {
             background-color: #a52d22;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0,0,0,0.2);
+        }
+        .tombol-cta:active {
+            transform: translateY(0);
         }
 
         /* Section Styling */
@@ -495,12 +519,17 @@
             justify-content: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             z-index: 1001; /* Higher than header */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
         }
 
         .whatsapp-floating-btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(10deg);
             box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+
+        .whatsapp-floating-btn:active {
+            transform: scale(1.0) rotate(0deg);
+            transition-duration: 0.1s;
         }
 
         .whatsapp-floating-btn svg {
@@ -577,13 +606,18 @@
             text-decoration: none;
             border-radius: 5px;
             font-weight: 500;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .tombol-saran:hover {
             background-color: #d4ac0d; /* Kuning lebih gelap */
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .tombol-saran:active {
+            transform: translateY(0);
+            box-shadow: none;
         }
 
         /* Animasi saat scroll */
@@ -749,47 +783,57 @@
         // --- Data Menu (Nama & Harga) ---
         // Anda bisa mengubah harga di sini
         const menuData = {
-            "MAKANAN": [
-                { name: "Ayam Kremes + Nasi", price: 20000 }, { name: "Ayam Kremes", price: 17000 },
-                { name: "Ayam Geprek + Nasi", price: 20000 }, { name: "Ayam Geprek", price: 17000 },
-                { name: "Ayam Cabe Ijo + Nasi", price: 21000 }, { name: "Ayam Cabe Ijo", price: 18000 },
-                { name: "Ayam Penyet Kremes + Nasi", price: 20000 }, { name: "Ayam Penyet Kremes", price: 17000 },
-                { name: "Ayam Penyet Cabe Ijo + Nasi", price: 21000 }, { name: "Ayam Penyet Cabe Ijo", price: 18000 },
-                { name: "Ayam Penyet Cabe Geprek + Nasi", price: 21000 }, { name: "Ayam Penyet Cabe Geprek", price: 18000 },
-                { name: "3T + Nasi", price: 18000 }, { name: "3T", price: 15000 },
-                { name: "3T Cabe Ijo + Nasi", price: 19000 }, { name: "3T Cabe Ijo", price: 16000 },
-                { name: "3T Cabe Geprek + Nasi", price: 19000 }, { name: "3T Cabe Geprek", price: 16000 },
-                { name: "Pecel Lele + Nasi", price: 18000 }, { name: "Pecel Lele", price: 15000 },
-                { name: "Pecel Lele Cabe Ijo + Nasi", price: 19000 }, { name: "Pecel Lele Cabe Ijo", price: 16000 },
-                { name: "Pecel Lele Geprek + Nasi", price: 19000 }, { name: "Pecel Lele Geprek", price: 16000 },
+            "AYAM & BEBEK": [
+                { name: "Bebek Goreng", price: 26000 }, { name: "Bebek Goreng + Nasi", price: 32000 },
+                { name: "Bebek Cabe Ijo", price: 26000 }, { name: "Bebek Cabe Ijo + Nasi", price: 32000 },
+                { name: "Bebek Cabe Merah", price: 26000 }, { name: "Bebek Cabe Merah + Nasi", price: 32000 },
+                { name: "Ayam Kremes", price: 14000 }, { name: "Ayam Kremes + Nasi", price: 20000 },
+                { name: "Ayam Cabe Ijo", price: 14000 }, { name: "Ayam Cabe Ijo + Nasi", price: 20000 },
+                { name: "Ayam Geprek", price: 14000 }, { name: "Ayam Geprek + Nasi", price: 20000 },
+                { name: "Ayam Penyet Kremes", price: 18000 }, { name: "Ayam Penyet Kremes + Nasi", price: 24000 },
+                { name: "Ayam Penyet Cabe Ijo", price: 18000 }, { name: "Ayam Penyet Cabe Ijo + Nasi", price: 24000 },
+                { name: "Ayam Penyet Cabe Merah", price: 18000 }, { name: "Ayam Penyet Cabe Merah + Nasi", price: 24000 },
             ],
-            "NASI & MIE": [
-                { name: "Nasi Putih", price: 5000 }, { name: "Nasi Goreng", price: 15000 },
-                { name: "Nasi Goreng Telor Dadar / Ceplok", price: 18000 }, { name: "Nasi Goreng Mawut", price: 17000 },
-                { name: "Nasi Goreng Mawut + Telor", price: 20000 }, { name: "Nasi Goreng Teri", price: 18000 },
-                { name: "Nasi Goreng Seafood", price: 22000 }, { name: "Nasi Goreng Mie", price: 16000 },
-                { name: "Nasi Goreng Bakso", price: 18000 }, { name: "Nasi Goreng Sosis", price: 18000 },
-                { name: "Mie Goreng", price: 15000 }, { name: "Mie Goreng Basah", price: 15000 },
-                { name: "Mie Rebus", price: 15000 }, { name: "Kwetiau Goreng", price: 16000 },
-                { name: "Kwetiau Goreng Basah", price: 16000 }, { name: "Kwetiau Kuah", price: 16000 },
-                { name: "Bihun Goreng", price: 15000 }, { name: "Bihun Goreng Basah", price: 15000 },
-                { name: "Bihun Kuah", price: 15000 },
+            "IKAN & LAINNYA": [
+                { name: "Pecel Lele", price: 15000 }, { name: "Pecel Lele + Nasi", price: 20000 },
+                { name: "Lele Cabe Ijo", price: 16000 }, { name: "Lele Cabe Ijo + Nasi", price: 22000 },
+                { name: "Lele Cabe Merah", price: 16000 }, { name: "Lele Cabe Merah + Nasi", price: 22000 },
+                { name: "3T (Telur, Tahu, Tempe)", price: 14000 }, { name: "3T + Nasi", price: 20000 },
+                { name: "Udang Goreng Tepung", price: 30000 }, { name: "Sotong Goreng Tepung", price: 30000 },
+            ],
+            "NASI GORENG": [
+                { name: "Nasi Putih", price: 6000 }, { name: "Nasgor Kampung", price: 18000 },
+                { name: "Nasgor Kampung Biasa", price: 16000 }, { name: "Nasgor Kampung + Telur", price: 22000 },
+                { name: "Nasgor Pedas + Telur", price: 20000 }, { name: "Nasgor Mie", price: 18000 },
+                { name: "Nasgor Mie + Telur", price: 22000 }, { name: "Nasgor Semrawut", price: 18000 },
+                { name: "Nasgor Semrawut + Telur", price: 22000 }, { name: "Nasgor Seafood", price: 26000 },
+                { name: "Nasgor Seafood + Telur", price: 30000 }, { name: "Nasgor + Bakso", price: 22000 },
+                { name: "Nasgor + Sosis", price: 22000 }, { name: "Nasgor + Ayam Goreng", price: 26000 },
+                { name: "Nasgor + Sayuran", price: 18000 }, { name: "Nasgor + Ikan Teri", price: 22000 },
+            ],
+            "MIE, KWETIAU, BIHUN": [
+                { name: "Mie Goreng", price: 16000 }, { name: "Mie Goreng + Telur", price: 20000 },
+                { name: "Mie Goreng Nyemek", price: 16000 }, { name: "Mie Goreng Nyemek + Telur", price: 20000 },
+                { name: "Mie Rebus", price: 16000 }, { name: "Mie Rebus + Telur", price: 20000 },
+                { name: "Kwetio Goreng", price: 17000 }, { name: "Kwetio Goreng + Telur", price: 21000 },
+                { name: "Kwetio Nyemek", price: 17000 }, { name: "Kwetio Nyemek + Telur", price: 21000 },
+                { name: "Kwetio Rebus", price: 17000 }, { name: "Kwetio Rebus + Telur", price: 21000 },
+                { name: "Bihun Goreng", price: 16000 }, { name: "Bihun Goreng + Telur", price: 20000 },
+                { name: "Bihun Nyemek", price: 16000 }, { name: "Bihun Nyemek + Telur", price: 20000 },
+                { name: "Bihun Rebus", price: 16000 }, { name: "Bihun Rebus + Telur", price: 20000 },
             ],
             "SAYUR & SOP": [
-                { name: "Cap Cay", price: 15000 }, { name: "Cap Cay + Ayam", price: 20000 },
-                { name: "Cap Cay + Seafood", price: 22000 }, { name: "Sop Ayam", price: 18000 },
-                { name: "Sop Tulang", price: 20000 }, { name: "Sop Telur", price: 12000 },
-                { name: "Sop Sayur", price: 10000 }, { name: "Cah Kangkung", price: 12000 },
-            ],
-            "BEBEK": [
-                { name: "Bebek Goreng", price: 28000 }, { name: "Bebek Cabe Ijo", price: 30000 },
-                { name: "Bebek Cabe Geprek", price: 30000 },
+                { name: "Cah Kangkung", price: 12000 }, { name: "Capcay", price: 20000 },
+                { name: "Capcay + Ayam", price: 28000 }, { name: "Capcay + Seafood", price: 30000 },
+                { name: "Soup Ayam", price: 25000 }, { name: "Soup Tulang", price: 30000 },
+                { name: "Soup Telur", price: 20000 }, { name: "Soup Sayur", price: 20000 },
             ],
             "MINUMAN": [
-                { name: "Teh Obeng", price: 4000 }, { name: "Teh O", price: 3000 },
-                { name: "Es Jeruk", price: 8000 }, { name: "Jeruk Hangat", price: 7000 },
-                { name: "Milo Dingin", price: 8000 }, { name: "Milo Hangat", price: 7000 },
-                { name: "Aneka Juice", price: 10000 },
+                { name: "Teh O", price: 5000 }, { name: "Teh Obeng", price: 5000 },
+                { name: "Kopi O", price: 6000 }, { name: "Es Jeruk", price: 8000 },
+                { name: "Jeruk Hangat", price: 8000 }, { name: "Milo Es", price: 8000 },
+                { name: "Milo Hangat", price: 8000 }, { name: "Aneka Juice", price: 12000 },
+                { name: "Es Sirup", price: 6000 }, { name: "Nutri Sari", price: 8000 },
             ]
         };
 
