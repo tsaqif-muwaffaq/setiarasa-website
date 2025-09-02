@@ -62,8 +62,8 @@ Vercel akan otomatis build & deploy.
 ---
 
 ## 📞 Kontak  
-📍 **Alamat:** Jl. Contoh No.123, Yogyakarta  
-📞 **Telepon:** 0812-3456-7890  
+📍 **Alamat:** Perumahan Taman Batu Aji Indah 2, Blok N No. 28, Jl. Brigjen Katamso, Sagulung Kota, Sagulung, Sagulung Kota, Kec. Sagulung, Kota Batam, Kepulauan Riau 29444 
+📞 **Telepon:** 085767571976
 📧 **Email:** setiarasa@email.com  
 🌐 **Website:** [setiarasa-website.vercel.app](https://setiarasa-website.vercel.app)  
 
