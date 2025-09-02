@@ -429,6 +429,63 @@
             }
         }
 
+        /* Filter dan Search Menu */
+        .filter-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        #menu-search-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-warna);
+            border-radius: 5px;
+            font-family: var(--font-isi);
+            font-size: 1rem;
+            box-sizing: border-box;
+            background-color: var(--latar-belakang);
+            color: var(--warna-dasar);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        #menu-search-input:focus {
+            outline: none;
+            border-color: var(--warna-merah);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--warna-merah) 20%, transparent);
+        }
+
+        .category-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            border: 1px solid var(--border-warna);
+            background-color: var(--latar-elemen);
+            color: var(--warna-sekunder);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background-color: var(--warna-kuning);
+            color: var(--warna-dasar);
+            border-color: var(--warna-kuning);
+        }
+
+        .filter-btn.active {
+            background-color: var(--warna-merah);
+            color: white;
+            border-color: var(--warna-merah);
+            transform: scale(1.05);
+        }
+
         /* Form Pemesanan */
         #form-pesan-online {
             background-color: var(--latar-elemen);
@@ -550,6 +607,16 @@
 
         body.dark-mode .map-container iframe {
             filter: invert(90%) hue-rotate(180deg);
+        }
+
+        /* Status Restoran */
+        #status-restoran.buka {
+            color: var(--warna-hijau);
+            font-weight: bold;
+        }
+        #status-restoran.tutup {
+            color: var(--warna-merah);
+            font-weight: bold;
         }
 
         /* Floating WhatsApp Button */
@@ -787,6 +854,12 @@
 
                 <div class="form-grup">
                     <label>Pilih Menu Anda</label>
+                    <div class="filter-controls">
+                        <input type="search" id="menu-search-input" placeholder="Cari nama menu...">
+                        <div id="category-filters" class="category-filters">
+                            <!-- Tombol filter akan di-generate oleh JavaScript -->
+                        </div>
+                    </div>
                     <div class="menu-pilihan">
                         <!-- Pilihan menu akan di-generate oleh JavaScript -->
                     </div>
@@ -827,6 +900,24 @@
     document.addEventListener('DOMContentLoaded', function() {
         // --- Konfigurasi ---
         const NOMOR_WHATSAPP = '6285767571976'; // Ganti dengan nomor WhatsApp tujuan
+
+        // --- Cek Status Restoran ---
+        const statusEl = document.getElementById('status-restoran');
+        if (statusEl) {
+            const jamBuka = 16; // Jam 4 sore
+            // Jam tutup adalah 00:00, artinya restoran buka dari jam 16:00 hingga 23:59.
+            
+            const sekarang = new Date();
+            const jamSekarang = sekarang.getHours();
+
+            if (jamSekarang >= jamBuka) { // Buka jika jam sekarang 16, 17, ..., 23
+                statusEl.textContent = '✅ Buka sekarang';
+                statusEl.classList.add('buka');
+            } else { // Tutup jika jam sekarang 0, 1, ..., 15
+                statusEl.textContent = `❌ Tutup, buka lagi jam ${jamBuka}:00`;
+                statusEl.classList.add('tutup');
+            }
+        }
 
         // --- Data Menu (Nama & Harga) ---
         // Anda bisa mengubah harga di sini
@@ -933,6 +1024,67 @@
             formKategoriFieldset.appendChild(itemsContainer);
             menuPilihan.appendChild(formKategoriFieldset);
         }
+
+        // --- Menu Search & Filter Logic ---
+        const searchInput = document.getElementById('menu-search-input');
+        const categoryFiltersContainer = document.getElementById('category-filters');
+        const allMenuCategories = document.querySelectorAll('.form-menu-kategori');
+
+        // 1. Generate Filter Buttons
+        const categories = ['Semua', ...Object.keys(menuData)];
+        categories.forEach(category => {
+            const btn = document.createElement('button');
+            btn.type = 'button'; // Mencegah form terkirim saat diklik
+            btn.className = 'filter-btn';
+            btn.textContent = category;
+            btn.dataset.category = category;
+            if (category === 'Semua') {
+                btn.classList.add('active');
+            }
+            categoryFiltersContainer.appendChild(btn);
+        });
+
+        // 2. The Filter Function
+        function filterMenu() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const activeCategory = categoryFiltersContainer.querySelector('.filter-btn.active').dataset.category;
+
+            allMenuCategories.forEach(kategoriDiv => {
+                const kategoriName = kategoriDiv.querySelector('legend').textContent;
+                let isCategoryVisible = false;
+
+                const categoryMatchesFilter = (activeCategory === 'Semua' || kategoriName === activeCategory);
+                
+                if (!categoryMatchesFilter) {
+                    kategoriDiv.style.display = 'none';
+                    return;
+                }
+
+                const items = kategoriDiv.querySelectorAll('.item-pilihan');
+                items.forEach(item => {
+                    const itemName = item.querySelector('label').textContent.toLowerCase();
+                    const itemMatchesSearch = itemName.includes(searchTerm);
+
+                    if (itemMatchesSearch) {
+                        item.style.display = 'flex';
+                        isCategoryVisible = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                kategoriDiv.style.display = isCategoryVisible ? 'block' : 'none';
+            });
+        }
+
+        // 3. Add Event Listeners
+        searchInput.addEventListener('input', filterMenu);
+        categoryFiltersContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('filter-btn')) {
+                categoryFiltersContainer.querySelector('.filter-btn.active').classList.remove('active');
+                e.target.classList.add('active');
+                filterMenu();
+            }
+        });
 
         // --- Dark/Light Mode Toggle ---
         const themeToggle = document.getElementById('theme-toggle');
