@@ -486,6 +486,43 @@
             transform: scale(1.05);
         }
 
+        /* Styling untuk Opsi Pesanan (Makan di Tempat / Bungkus) */
+        .opsi-pesanan-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Sembunyikan radio button asli */
+        .opsi-pesanan-container input[type="radio"] {
+            display: none;
+        }
+
+        .opsi-pesanan-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--border-warna);
+            background-color: var(--latar-elemen);
+            color: var(--warna-sekunder);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            user-select: none; /* Mencegah teks terseleksi saat diklik */
+        }
+
+        .opsi-pesanan-btn:hover {
+            border-color: var(--warna-kuning);
+            color: var(--warna-dasar);
+        }
+
+        /* Gaya saat radio button terpilih */
+        .opsi-pesanan-container input[type="radio"]:checked + .opsi-pesanan-btn {
+            background-color: var(--warna-merah);
+            border-color: var(--warna-merah);
+            color: white;
+            box-shadow: 0 2px 8px color-mix(in srgb, var(--warna-merah) 30%, transparent);
+        }
+
         /* Form Pemesanan */
         #form-pesan-online {
             background-color: var(--latar-elemen);
@@ -847,9 +884,19 @@
                     <label for="telepon">Nomor WhatsApp</label>
                     <input type="tel" id="telepon" name="telepon" placeholder="Contoh: 081234567890" required>
                 </div>
-                <div class="form-grup">
+                <div class="form-grup" id="alamat-grup">
                     <label for="alamat">Alamat Pengiriman</label>
                     <textarea id="alamat" name="alamat" rows="3" placeholder="Masukkan alamat lengkap Anda" required></textarea>
+                </div>
+                <div class="form-grup">
+                    <label>Opsi Pesanan</label>
+                    <div class="opsi-pesanan-container">
+                        <input type="radio" id="opsi-bungkus" name="opsi-pesanan" value="Dibungkus / Diantar" checked>
+                        <label for="opsi-bungkus" class="opsi-pesanan-btn">Dibungkus / Diantar</label>
+
+                        <input type="radio" id="opsi-ditempat" name="opsi-pesanan" value="Makan di Tempat">
+                        <label for="opsi-ditempat" class="opsi-pesanan-btn">Makan di Tempat</label>
+                    </div>
                 </div>
 
                 <div class="form-grup">
@@ -941,14 +988,19 @@
                 { name: "Udang Goreng Tepung", price: 30000 }, { name: "Sotong Goreng Tepung", price: 30000 },
             ],
             "NASI GORENG": [
-                { name: "Nasi Putih", price: 6000 }, { name: "Nasgor Kampung", price: 18000 },
-                { name: "Nasgor Kampung Biasa", price: 16000 }, { name: "Nasgor Kampung + Telur", price: 22000 },
-                { name: "Nasgor Pedas + Telur", price: 20000 }, { name: "Nasgor Mie", price: 18000 },
-                { name: "Nasgor Mie + Telur", price: 22000 }, { name: "Nasgor Semrawut", price: 18000 },
-                { name: "Nasgor Semrawut + Telur", price: 22000 }, { name: "Nasgor Seafood", price: 26000 },
-                { name: "Nasgor Seafood + Telur", price: 30000 }, { name: "Nasgor + Bakso", price: 22000 },
-                { name: "Nasgor + Sosis", price: 22000 }, { name: "Nasgor + Ayam Goreng", price: 26000 },
-                { name: "Nasgor + Sayuran", price: 18000 }, { name: "Nasgor + Ikan Teri", price: 22000 },
+                { name: "Nasi Putih", price: 6000 },
+                { name: "Nasgor Biasa", price: 16000 },
+                { name: "Nasgor Biasa + Telur", price: 20000 },
+                { name: "Nasgor Kampung", price: 18000 },
+                { name: "Nasgor Kampung + Telur", price: 22000 },
+                { name: "Nasgor Kampung + Ikan Teri", price: 25000 },
+                { name: "Nasgor Kampung + Seafood", price: 28000 },
+                { name: "Nasgor Pedas + Telur", price: 20000 },
+                { name: "Nasgor Mie", price: 18000 }, { name: "Nasgor Mie + Telur", price: 22000 },
+                { name: "Nasgor Semrawut", price: 18000 }, { name: "Nasgor Semrawut + Telur", price: 22000 },
+                { name: "Nasgor Seafood + Telur", price: 30000 },
+                { name: "Nasgor + Bakso", price: 22000 }, { name: "Nasgor + Sosis", price: 22000 },
+                { name: "Nasgor + Ayam Goreng", price: 26000 }, { name: "Nasgor + Sayuran", price: 18000 },
             ],
             "MIE, KWETIAU, BIHUN": [
                 { name: "Mie Goreng", price: 16000 }, { name: "Mie Goreng + Telur", price: 20000 },
@@ -1159,12 +1211,30 @@
             }
         });
 
+        // --- Logika untuk Opsi Makan di Tempat / Bungkus ---
+        const opsiPesananRadios = document.querySelectorAll('input[name="opsi-pesanan"]');
+        const alamatGrup = document.getElementById('alamat-grup');
+        const alamatTextarea = document.getElementById('alamat');
+
+        opsiPesananRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'Makan di Tempat') {
+                    alamatGrup.style.display = 'none';
+                    alamatTextarea.required = false;
+                } else { // Dibungkus / Diantar
+                    alamatGrup.style.display = 'block';
+                    alamatTextarea.required = true;
+                }
+            });
+        });
+
         // --- Form Submission to WhatsApp ---
         const orderForm = document.getElementById('form-pesan-online');
         orderForm.addEventListener('submit', function(event) {
             event.preventDefault();
             const nama = document.getElementById('nama').value;
             const telepon = document.getElementById('telepon').value;
+            const opsiPesanan = document.querySelector('input[name="opsi-pesanan"]:checked').value;
             const alamat = document.getElementById('alamat').value;
             const catatan = document.getElementById('catatan').value;
             const totalHarga = document.getElementById('total-harga').textContent;
@@ -1182,23 +1252,26 @@
                 pesanan += `- ${item.value} (x${jumlah})\n`;
             });
 
-            const pesanWhatsApp = `
+            let pesanWhatsApp = `
 Halo *Rumah Makan Setia Rasa*, saya mau pesan:
 
 *Nama:* ${nama}
 *No. HP:* ${telepon}
-*Alamat:* ${alamat}
-
+*Opsi Pesanan:* ${opsiPesanan}
+`;
+            if (opsiPesanan !== 'Makan di Tempat') {
+                pesanWhatsApp += `*Alamat:* ${alamat}\n`;
+            }
+            pesanWhatsApp += `
 *Pesanan:*
 ${pesanan}
 *Catatan:* ${catatan || '-'}
 *--------------------------*
 *Total Perkiraan:* ${totalHarga}
 
-Mohon konfirmasi ketersediaan, total akhir beserta ongkos kirimnya. Terima kasih!
-            `.trim();
+Mohon konfirmasi ketersediaan, total akhir beserta ongkos kirimnya. Terima kasih!`;
 
-            const urlWhatsApp = `https://wa.me/${NOMOR_WHATSAPP}?text=${encodeURIComponent(pesanWhatsApp)}`;
+            const urlWhatsApp = `https://wa.me/${NOMOR_WHATSAPP}?text=${encodeURIComponent(pesanWhatsApp.trim())}`;
             window.open(urlWhatsApp, '_blank');
         });
 
