@@ -55,8 +55,10 @@
         .header {
             background-color: var(--latar-elemen);
             padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
+            /* Menggunakan Grid untuk layout yang lebih robust dan terpusat */
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1.5rem; /* Jarak antar elemen header: logo, nav, controls */
             align-items: center;
             box-shadow: 0 2px 10px var(--bayangan);
             position: sticky;
@@ -79,14 +81,29 @@
             width: auto;
         }
 
+        .navigasi {
+            /* Desktop: flex container untuk menata link secara horizontal dan terpusat */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px; /* Jarak modern antar link, menggantikan margin */
+        }
+
         .navigasi a {
-            margin-left: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             text-decoration: none;
             color: var(--warna-dasar);
             font-weight: 500;
             transition: color 0.3s ease;
             position: relative; /* Diperlukan untuk animasi garis bawah */
             padding-bottom: 8px; /* Beri ruang untuk garis animasi */
+        }
+
+        /* Add margin to all nav links except the first one */
+        .navigasi a + a {
+            /* Dihapus karena sekarang menggunakan 'gap' pada container .navigasi */
         }
 
         .navigasi a:hover, .navigasi a.active {
@@ -111,12 +128,22 @@
             transform: scaleX(1);
         }
 
+        /* --- Animasi Ikon Navigasi --- */
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .navigasi a:hover .nav-icon, .navigasi a.active .nav-icon {
+            transform: translateY(-2px) scale(1.1);
+        }
+
         .tombol-pesan-nav {
             background-color: var(--warna-hijau);
             color: white !important;
             padding: 8px 16px;
             border-radius: 5px;
-            margin-left: 25px; 
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -124,6 +151,9 @@
             background-color: #219d55;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .tombol-pesan-nav:hover .nav-icon {
+            transform: rotate(10deg) scale(1.1);
         }
         .tombol-pesan-nav:active {
             transform: translateY(0);
@@ -170,6 +200,7 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+            justify-self: end; /* Meratakan kontrol ke ujung kanan grid */
         }
 
         /* Theme Switcher */
@@ -373,15 +404,19 @@
         /* Breakpoint untuk tablet dan mobile. Dinaikkan dari 820px ke 992px untuk mendukung perangkat seperti Surface Pro. */
         @media (max-width: 992px) {
             .header {
+                /* Kembali ke flexbox untuk layout mobile yang lebih simpel */
+                display: flex;
+                justify-content: space-between;
                 padding: 1rem 1.5rem;
             }
 
             .navigasi {
+                /* Ini adalah style untuk menu overlay saat mobile */
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                gap: 1rem;
+                gap: 2rem; /* Perbesar jarak di menu mobile */
                 background: color-mix(in srgb, var(--latar-elemen) 95%, transparent);
                 backdrop-filter: blur(8px);
                 position: fixed;
@@ -390,7 +425,7 @@
                 width: 100%;
                 height: 100vh;
                 transform: translateY(-100%);
-                transition: transform 0.3s ease-in-out;
+                transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
                 z-index: 100;
             }
 
@@ -399,11 +434,16 @@
             }
 
             .navigasi a {
-                margin: 0;
+                /* Hapus margin yang tidak perlu karena sudah pakai gap */
                 font-size: 1.5rem;
                 padding: 0.5rem;
+                gap: 12px; /* Perbesar jarak ikon dan teks di mobile */
             }
 
+            .nav-icon {
+                width: 22px; /* Perbesar ikon di mobile */
+                height: 22px;
+            }
             .tombol-pesan-nav { margin: 1rem 0 0 0; }
             .header-controls {
                 z-index: 1001;
@@ -486,6 +526,62 @@
             transform: scale(1.05);
         }
 
+        /* --- Grid untuk Opsi Pemesanan (Card Style) --- */
+        .options-grid {
+            display: grid;
+            /* Kolom akan menyesuaikan otomatis dengan ruang yang tersedia */
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        /* --- Styling Card Opsi --- */
+        .option-card {
+            background-color: var(--latar-elemen);
+            border: 2px solid var(--border-warna);
+            border-radius: 10px;
+            padding: 1.5rem 1rem;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            user-select: none;
+            text-align: center;
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px var(--bayangan);
+            border-color: var(--warna-kuning);
+        }
+
+        .option-card svg {
+            width: 40px;
+            height: 40px;
+            color: var(--warna-merah);
+            transition: color 0.3s ease;
+        }
+
+        .option-card span {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .option-card.selected {
+            border-color: var(--warna-merah);
+            background-color: color-mix(in srgb, var(--warna-merah) 5%, var(--latar-elemen));
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--warna-merah) 20%, transparent);
+        }
+
+        /* Penyesuaian responsif untuk card opsi di layar kecil */
+        @media (max-width: 480px) {
+            .option-card {
+                padding: 1rem 0.75rem; /* Kurangi padding agar lebih compact */
+            }
+        }
+
         /* Styling untuk Opsi Pesanan (Makan di Tempat / Bungkus) */
         .opsi-pesanan-container {
             display: flex;
@@ -496,31 +592,6 @@
         /* Sembunyikan radio button asli */
         .opsi-pesanan-container input[type="radio"] {
             display: none;
-        }
-
-        .opsi-pesanan-btn {
-            padding: 10px 20px;
-            border: 2px solid var(--border-warna);
-            background-color: var(--latar-elemen);
-            color: var(--warna-sekunder);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            user-select: none; /* Mencegah teks terseleksi saat diklik */
-        }
-
-        .opsi-pesanan-btn:hover {
-            border-color: var(--warna-kuning);
-            color: var(--warna-dasar);
-        }
-
-        /* Gaya saat radio button terpilih */
-        .opsi-pesanan-container input[type="radio"]:checked + .opsi-pesanan-btn {
-            background-color: var(--warna-merah);
-            border-color: var(--warna-merah);
-            color: white;
-            box-shadow: 0 2px 8px color-mix(in srgb, var(--warna-merah) 30%, transparent);
         }
 
         /* Form Pemesanan */
@@ -772,6 +843,53 @@
             box-shadow: none;
         }
 
+        .payment-qr-container {
+            text-align: center;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            border: 1px dashed var(--border-warna);
+            border-radius: 8px;
+            background-color: var(--latar-alternatif);
+        }
+
+        .qr-code-img {
+            max-width: 250px;
+            width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+        }
+
+        /* Custom styling for fake file input button */
+        .tombol-file-custom {
+            display: inline-block;
+            margin-right: 1rem;
+            border: 1px solid var(--border-warna);
+            padding: 10px 15px;
+            border-radius: 5px;
+            background-color: var(--latar-elemen);
+            color: var(--warna-dasar);
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .tombol-file-custom:hover {
+            background-color: var(--latar-alternatif);
+        }
+
+        .nama-file {
+            color: var(--warna-sekunder);
+            font-style: italic;
+        }
+
+        .form-grup small {
+            display: block;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--warna-sekunder);
+        }
+
         /* Animasi saat scroll */
         .animate-on-scroll {
             opacity: 0;
@@ -795,12 +913,30 @@
             <span>Setia Rasa</span>
         </a>
         <nav class="navigasi">
-            <a href="#hero" class="active">Beranda</a>
-            <a href="#menu">Menu</a>
-            <a href="#tentang">Tentang Kami</a>
-            <a href="#testimoni">Testimoni</a>
-            <a href="#kontak">Kontak</a>
-            <a href="#pesan-online" class="tombol-pesan-nav">Pesan Online</a>
+            <a href="#hero" class="active">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
+                <span>Beranda</span>
+            </a>
+            <a href="#menu">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                <span>Menu</span>
+            </a>
+            <a href="#tentang">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg>
+                <span>Tentang Kami</span>
+            </a>
+            <a href="#testimoni">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.31h5.417c.512 0 .727.662.344 1.002l-4.28 3.301a.563.563 0 00-.182.658l1.54 5.571c.154.561-.41.999-.91.658l-4.4-3.182a.563.563 0 00-.652 0l-4.4 3.182c-.5.341-1.065-.097-.91-.658l1.54-5.571a.563.563 0 00-.182-.658l-4.28-3.301c-.383-.34-.168-1.002.344-1.002h5.417a.563.563 0 00.475-.31L11.48 3.5z" /></svg>
+                <span>Testimoni</span>
+            </a>
+            <a href="#kontak">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
+                <span>Kontak</span>
+            </a>
+            <a href="#pesan-online" class="tombol-pesan-nav">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .962-.343 1.087-.835l1.823-6.841c.125-.468-.098-.959-.57-1.134l-9.426-3.771c-.473-.188-1.026.02-1.214.492L5.51 12.43M7.5 14.25L5.106 5.165" /></svg>
+                <span>Pesan Online</span>
+            </a>
         </nav>
         <div class="header-controls">
             <div class="theme-switcher">
@@ -867,7 +1003,7 @@
             <p class="animate-on-scroll"><strong>Jam Buka:</strong> Setiap Hari, 16:00 - 00:00</p>
 
             <div class="map-container animate-on-scroll">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.1550423712315!2d103.94229!3d1.0447560000000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d98d6b6a25f7ed%3A0x99b387a20aab3153!2sSpesial%20Nasi%20Goreng%20Setia%20Rasa!5e0!3m2!1sid!2sid!4v1756480269081!5m2!1sid!2sid" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.1550423712315!2d103.94229!3d1.044756!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d98d6b6a25f7ed%3A0x99b387a20aab3153!2sSpesial%20Nasi%20Goreng%20Setia%20Rasa!5e0!3m2!1sid!2sid!4v1721378130386!5m2!1sid!2sid" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </section>
 
@@ -890,13 +1026,25 @@
                 </div>
                 <div class="form-grup">
                     <label>Opsi Pesanan</label>
-                    <div class="opsi-pesanan-container">
-                        <input type="radio" id="opsi-bungkus" name="opsi-pesanan" value="Dibungkus / Diantar" checked>
-                        <label for="opsi-bungkus" class="opsi-pesanan-btn">Dibungkus / Diantar</label>
-
-                        <input type="radio" id="opsi-ditempat" name="opsi-pesanan" value="Makan di Tempat">
-                        <label for="opsi-ditempat" class="opsi-pesanan-btn">Makan di Tempat</label>
+                    <div class="options-grid" id="order-options-container">
+                        <!-- 1. Dine In -->
+                        <div class="option-card" data-option="Makan di Tempat">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.5 13.5L18 15l-1.5 1.5" /></svg>
+                            <span>Makan di Tempat</span>
+                        </div>
+                        <!-- 3. Pick Up -->
+                        <div class="option-card" data-option="Pick Up">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                            <span>Ambil Sendiri (Pick Up)</span>
+                        </div>
+                        <!-- 4. Delivery -->
+                        <div class="option-card" data-option="Delivery">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125V14.25m-17.25 4.5v-1.875a3.375 3.375 0 013.375-3.375h9.75a3.375 3.375 0 013.375 3.375v1.875m-17.25 4.5h-2.25" /></svg>
+                            <span>Antar ke Alamat (Delivery)</span>
+                        </div>
                     </div>
+                    <!-- Input tersembunyi untuk menyimpan nilai yang dipilih -->
+                    <input type="hidden" id="opsi-pesanan-terpilih" name="opsi-pesanan" value="">
                 </div>
 
                 <div class="form-grup">
@@ -921,8 +1069,18 @@
                     Total: <span id="total-harga">Rp 0</span>
                 </div>
 
+                <div class="form-grup">
+                    <label>Langkah 2: Pembayaran</label>
+                    <p>Silakan lakukan pembayaran ke QRIS di bawah ini. Setelah itu, klik tombol di bawah untuk mengirim detail pesanan dan konfirmasi pembayaran melalui WhatsApp.</p>
+                    <div class="payment-qr-container">
+                        <!-- GANTI "assets/qris-asli.jpg" DENGAN PATH GAMBAR QRIS ANDA -->
+                        <img src="qris-setiarasa.jpeg" alt="QRIS Pembayaran Setia Rasa" class="qr-code-img">
+                        <p><strong>Atas Nama:</strong> SETIA RASA</p>
+                    </div>
+                </div>
+
                 <button type="submit" class="tombol-cta tombol-kirim">
-                    Kirim Pesanan via WhatsApp
+                    Konfirmasi & Kirim Pesanan via WhatsApp
                 </button>
             </form>
         </section>
@@ -1211,39 +1369,61 @@
             }
         });
 
-        // --- Logika untuk Opsi Makan di Tempat / Bungkus ---
-        const opsiPesananRadios = document.querySelectorAll('input[name="opsi-pesanan"]');
+        // --- Logika untuk Opsi Pesanan (Card System) ---
+        const orderOptionsContainer = document.getElementById('order-options-container');
         const alamatGrup = document.getElementById('alamat-grup');
         const alamatTextarea = document.getElementById('alamat');
+        const hiddenOrderOptionInput = document.getElementById('opsi-pesanan-terpilih');
 
-        opsiPesananRadios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                if (this.value === 'Makan di Tempat') {
-                    alamatGrup.style.display = 'none';
-                    alamatTextarea.required = false;
-                } else { // Dibungkus / Diantar
-                    alamatGrup.style.display = 'block';
-                    alamatTextarea.required = true;
-                }
-            });
+        // Atur keadaan awal: sembunyikan alamat karena belum ada yang dipilih
+        alamatGrup.style.display = 'none';
+        alamatTextarea.required = false;
+
+        orderOptionsContainer.addEventListener('click', function(e) {
+            const clickedCard = e.target.closest('.option-card');
+            if (!clickedCard) return;
+
+            const selectedOption = clickedCard.dataset.option;
+            const allOptionCards = orderOptionsContainer.querySelectorAll('.option-card');
+
+            allOptionCards.forEach(card => card.classList.remove('selected'));
+            clickedCard.classList.add('selected');
+
+            hiddenOrderOptionInput.value = selectedOption;
+
+            if (selectedOption === 'Delivery') {
+                alamatGrup.style.display = 'block';
+                alamatTextarea.required = true;
+            } else {
+                alamatGrup.style.display = 'none';
+                alamatTextarea.required = false;
+            }
         });
 
         // --- Form Submission to WhatsApp ---
         const orderForm = document.getElementById('form-pesan-online');
         orderForm.addEventListener('submit', function(event) {
             event.preventDefault();
+            
             const nama = document.getElementById('nama').value;
             const telepon = document.getElementById('telepon').value;
-            const opsiPesanan = document.querySelector('input[name="opsi-pesanan"]:checked').value;
+            const opsiPesanan = document.getElementById('opsi-pesanan-terpilih').value;
             const alamat = document.getElementById('alamat').value;
             const catatan = document.getElementById('catatan').value;
             const totalHarga = document.getElementById('total-harga').textContent;
+
+            if (!opsiPesanan) {
+                alert('Silakan pilih salah satu Opsi Pesanan terlebih dahulu.');
+                orderOptionsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
 
             let pesanan = '';
             const itemsPilihan = document.querySelectorAll('.item-pilihan input[type="checkbox"]:checked');
 
             if (itemsPilihan.length === 0) {
-                alert('Silakan pilih minimal satu menu.');
+                alert('Anda belum memilih menu apapun. Silakan pilih minimal satu menu.');
+                document.querySelector('.menu-pilihan').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
 
@@ -1251,25 +1431,25 @@
                 const jumlah = item.parentElement.querySelector('input[type="number"]').value;
                 pesanan += `- ${item.value} (x${jumlah})\n`;
             });
-
+            
             let pesanWhatsApp = `
-Halo *Rumah Makan Setia Rasa*, saya mau pesan:
+Halo *Rumah Makan Setia Rasa*, saya ingin konfirmasi pesanan:
 
 *Nama:* ${nama}
 *No. HP:* ${telepon}
 *Opsi Pesanan:* ${opsiPesanan}
 `;
-            if (opsiPesanan !== 'Makan di Tempat') {
+            if (opsiPesanan === 'Delivery') {
                 pesanWhatsApp += `*Alamat:* ${alamat}\n`;
             }
             pesanWhatsApp += `
 *Pesanan:*
 ${pesanan}
 *Catatan:* ${catatan || '-'}
-*--------------------------*
-*Total Perkiraan:* ${totalHarga}
+*==========================*
+*Total Pembayaran:* ${totalHarga}
 
-Mohon konfirmasi ketersediaan, total akhir beserta ongkos kirimnya. Terima kasih!`;
+Pembayaran sudah dilakukan. *Saya akan segera mengirimkan bukti transfer di chat ini.* Mohon segera diproses. Terima kasih!`;
 
             const urlWhatsApp = `https://wa.me/${NOMOR_WHATSAPP}?text=${encodeURIComponent(pesanWhatsApp.trim())}`;
             window.open(urlWhatsApp, '_blank');
