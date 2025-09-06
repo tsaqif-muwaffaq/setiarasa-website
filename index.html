@@ -526,6 +526,11 @@
             transform: scale(1.05);
         }
 
+        .filter-btn:active {
+            transform: scale(0.97);
+            transition-duration: 0.1s;
+        }
+
         /* --- Grid untuk Opsi Pemesanan (Card Style) --- */
         .options-grid {
             display: grid;
@@ -555,6 +560,12 @@
             transform: translateY(-5px);
             box-shadow: 0 6px 15px var(--bayangan);
             border-color: var(--warna-kuning);
+        }
+
+        .option-card:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 8px var(--bayangan);
+            transition-duration: 0.1s;
         }
 
         .option-card svg {
@@ -624,7 +635,8 @@
         }
 
         .form-grup input,
-        .form-grup textarea {
+        .form-grup textarea,
+        .form-grup select {
             width: 100%;
             padding: 10px;
             border: 1px solid var(--border-warna);
@@ -1024,6 +1036,32 @@
                     <label for="alamat">Alamat Pengiriman</label>
                     <textarea id="alamat" name="alamat" rows="3" placeholder="Masukkan alamat lengkap Anda" required></textarea>
                 </div>
+                <div class="form-grup" id="nomor-meja-grup">
+                    <label for="nomor-meja">Pilih Nomor Meja</label>
+                    <select id="nomor-meja" name="nomor-meja">
+                        <option value="" disabled selected>-- Pilih Meja --</option>
+                        <option value="Meja 1">Meja 1</option>
+                        <option value="Meja 2">Meja 2</option>
+                        <option value="Meja 3">Meja 3</option>
+                        <option value="Meja 4">Meja 4</option>
+                        <option value="Meja 5">Meja 5</option>
+                        <option value="Meja 6">Meja 6</option>
+                        <option value="Meja 7">Meja 7</option>
+                        <option value="Meja 8">Meja 8</option>
+                        <option value="Meja 9">Meja 9</option>
+                        <option value="Meja 10">Meja 10</option>
+                        <option value="Meja 11">Meja 11</option>
+                        <option value="Meja 12">Meja 12</option>
+                        <option value="Meja 13">Meja 13</option>
+                        <option value="Meja 14">Meja 14</option>
+                        <option value="Meja 15">Meja 15</option>
+                        <option value="Meja 16">Meja 16</option>
+                        <option value="Meja 17">Meja 17</option>
+                        <option value="Meja 18">Meja 18</option>
+                        <option value="Meja 19">Meja 19</option>
+                        <option value="Meja 20">Meja 20</option>
+                    </select>
+                </div>
                 <div class="form-grup">
                     <label>Opsi Pesanan</label>
                     <div class="options-grid" id="order-options-container">
@@ -1073,9 +1111,13 @@
                     <label>Langkah 2: Pembayaran</label>
                     <p>Silakan lakukan pembayaran ke QRIS di bawah ini. Setelah itu, klik tombol di bawah untuk mengirim detail pesanan dan konfirmasi pembayaran melalui WhatsApp.</p>
                     <div class="payment-qr-container">
-                        <!-- GANTI "assets/qris-asli.jpg" DENGAN PATH GAMBAR QRIS ANDA -->
-                        <img src="qris-setiarasa.jpeg" alt="QRIS Pembayaran Setia Rasa" class="qr-code-img">
+                        <!-- Canvas untuk menggabungkan QRIS dan Logo -->
+                        <canvas id="qris-canvas" style="max-width: 250px; width: 100%; height: auto; border-radius: 5px;"></canvas>
                         <p><strong>Atas Nama:</strong> SETIA RASA</p>
+                        <!-- Tombol untuk mengunduh gambar dari canvas -->
+                        <a href="#" id="download-qris-btn" class="tombol-saran" style="margin-top: 1rem; text-decoration: none;">
+                            Download QRIS
+                        </a>
                     </div>
                 </div>
 
@@ -1373,11 +1415,15 @@
         const orderOptionsContainer = document.getElementById('order-options-container');
         const alamatGrup = document.getElementById('alamat-grup');
         const alamatTextarea = document.getElementById('alamat');
+        const nomorMejaGrup = document.getElementById('nomor-meja-grup');
+        const nomorMejaSelect = document.getElementById('nomor-meja');
         const hiddenOrderOptionInput = document.getElementById('opsi-pesanan-terpilih');
 
-        // Atur keadaan awal: sembunyikan alamat karena belum ada yang dipilih
+        // Atur keadaan awal: sembunyikan semua field opsional
         alamatGrup.style.display = 'none';
         alamatTextarea.required = false;
+        nomorMejaGrup.style.display = 'none';
+        nomorMejaSelect.required = false;
 
         orderOptionsContainer.addEventListener('click', function(e) {
             const clickedCard = e.target.closest('.option-card');
@@ -1385,6 +1431,12 @@
 
             const selectedOption = clickedCard.dataset.option;
             const allOptionCards = orderOptionsContainer.querySelectorAll('.option-card');
+
+            // Reset semua field opsional sebelum menampilkan yang baru
+            alamatGrup.style.display = 'none';
+            alamatTextarea.required = false;
+            nomorMejaGrup.style.display = 'none';
+            nomorMejaSelect.required = false;
 
             allOptionCards.forEach(card => card.classList.remove('selected'));
             clickedCard.classList.add('selected');
@@ -1394,9 +1446,9 @@
             if (selectedOption === 'Delivery') {
                 alamatGrup.style.display = 'block';
                 alamatTextarea.required = true;
-            } else {
-                alamatGrup.style.display = 'none';
-                alamatTextarea.required = false;
+            } else if (selectedOption === 'Makan di Tempat') {
+                nomorMejaGrup.style.display = 'block';
+                nomorMejaSelect.required = true;
             }
         });
 
@@ -1409,6 +1461,7 @@
             const telepon = document.getElementById('telepon').value;
             const opsiPesanan = document.getElementById('opsi-pesanan-terpilih').value;
             const alamat = document.getElementById('alamat').value;
+            const nomorMeja = document.getElementById('nomor-meja').value;
             const catatan = document.getElementById('catatan').value;
             const totalHarga = document.getElementById('total-harga').textContent;
 
@@ -1441,6 +1494,8 @@ Halo *Rumah Makan Setia Rasa*, saya ingin konfirmasi pesanan:
 `;
             if (opsiPesanan === 'Delivery') {
                 pesanWhatsApp += `*Alamat:* ${alamat}\n`;
+            } else if (opsiPesanan === 'Makan di Tempat') {
+                pesanWhatsApp += `*Nomor Meja:* ${nomorMeja}\n`;
             }
             pesanWhatsApp += `
 *Pesanan:*
@@ -1454,6 +1509,76 @@ Pembayaran sudah dilakukan. *Saya akan segera mengirimkan bukti transfer di chat
             const urlWhatsApp = `https://wa.me/${NOMOR_WHATSAPP}?text=${encodeURIComponent(pesanWhatsApp.trim())}`;
             window.open(urlWhatsApp, '_blank');
         });
+
+        // --- Generate QRIS with Logo on Canvas ---
+        const canvas = document.getElementById('qris-canvas');
+        const downloadBtn = document.getElementById('download-qris-btn');
+
+        // Pastikan elemen canvas dan tombol ada sebelum melanjutkan
+        if (canvas && downloadBtn) {
+            const ctx = canvas.getContext('2d');
+            
+            const qrisImgSrc = 'qris-setiarasa.jpeg'; // Pastikan path ini benar
+            const logoImgSrc = 'setiarasa-logo-removebg-preview.png'; // Pastikan path ini benar
+
+            const qrisImage = new Image();
+            const logoImage = new Image();
+
+            // Mengatasi potensi masalah CORS (meskipun file lokal, ini praktik yang baik)
+            qrisImage.crossOrigin = "Anonymous";
+            logoImage.crossOrigin = "Anonymous";
+
+            // Fungsi untuk memuat gambar sebagai Promise
+            const loadImage = (img, src) => {
+                return new Promise((resolve, reject) => {
+                    img.onload = () => resolve(img);
+                    img.onerror = () => reject(new Error(`Gagal memuat gambar: ${src}`));
+                    img.src = src;
+                });
+            };
+
+            Promise.all([loadImage(qrisImage, qrisImgSrc), loadImage(logoImage, logoImgSrc)])
+                .then(() => {
+                    const canvasSize = 500; // Resolusi tinggi untuk kualitas
+                    canvas.width = canvasSize;
+                    canvas.height = canvasSize;
+
+                    // 1. Gambar QRIS sebagai latar belakang
+                    ctx.drawImage(qrisImage, 0, 0, canvasSize, canvasSize);
+
+                    // 2. Hitung ukuran dan posisi logo
+                    const logoSize = canvasSize * 0.25; // Logo berukuran 25% dari canvas
+                    const logoX = (canvasSize - logoSize) / 2;
+                    let logoY = (canvasSize - logoSize) / 2;
+
+                    // Penyesuaian posisi vertikal secara manual.
+                    // Terkadang, gambar logo memiliki ruang transparan yang tidak seimbang.
+                    // Ubah nilai di bawah ini untuk menggeser logo sedikit ke atas (negatif) atau ke bawah (positif) agar pas secara visual.
+                    logoY -= 5; // Geser 5 piksel ke atas
+                    // 3. (Revisi) Tambahkan latar belakang KOTAK putih di belakang logo.
+                    // Ini adalah cara paling aman untuk memastikan QRIS bisa di-scan.
+                    ctx.fillStyle = 'white';
+                    const bgSize = logoSize * 1.15; // Ukuran background 115% dari logo, bisa disesuaikan.
+                    const bgX = (canvasSize - bgSize) / 2;
+                    const bgY = (canvasSize - bgSize) / 2;
+                    ctx.fillRect(bgX, bgY, bgSize, bgSize);
+
+                    // 4. Gambar logo di atas latar belakang kotak putih
+                    ctx.drawImage(logoImage, logoX, logoY, logoSize, logoSize);
+
+                }).catch(error => {
+                    console.error(error);
+                });
+
+            // 5. Fungsikan tombol download
+            downloadBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const link = document.createElement('a');
+                link.download = 'qris-setiarasa-with-logo.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
 
         // --- Floating WhatsApp Button ---
         const floatingBtn = document.getElementById('whatsapp-floating-btn');
