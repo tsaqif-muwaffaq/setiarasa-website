@@ -203,7 +203,7 @@
             justify-self: end; /* Meratakan kontrol ke ujung kanan grid */
         }
 
-        /* Theme Switcher */
+        /* Theme Switcher dengan Animasi Matahari/Bulan */
         .theme-switcher input {
             display: none;
         }
@@ -213,31 +213,40 @@
             display: block;
             width: 50px;
             height: 26px;
-            background-color: #ccc;
+            background-color: #87CEEB; /* Sky blue untuk siang hari */
             border-radius: 13px;
             position: relative; 
-            transition: background-color 0.3s, transform 0.2s ease, box-shadow 0.2s ease;
+            transition: background-color 0.4s ease;
         }
         .theme-switcher label:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 8px var(--bayangan);
+            box-shadow: 0 0 8px color-mix(in srgb, var(--warna-kuning) 50%, transparent);
         }
 
         body.dark-mode .theme-switcher label {
-            background-color: var(--warna-hijau);
+            background-color: #2c3e50; /* Biru gelap untuk malam hari */
         }
 
-        .theme-switcher label span {
+        /* Bagian 'thumb' yang bergerak - Desain Baru Profesional */
+        .theme-switcher .thumb {
             position: absolute;
             width: 22px;
             height: 22px;
-            background-color: white;
+            background-color: var(--warna-kuning);
             border-radius: 50%;
             top: 2px;
             left: 2px;
-            transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Bayangan bulan sabit, awalnya transparan dan tidak terlihat */
+            box-shadow: inset 0 0 0 0 transparent;
         }
-        .theme-switcher input:checked + label span { transform: translateX(24px); }
+
+        /* Saat mode gelap, thumb bergerak dan menjadi bulan */
+        .theme-switcher input:checked + label .thumb {
+            transform: translateX(24px);
+            background-color: transparent; /* Inti matahari menghilang */
+            /* Bayangan inset muncul untuk membentuk bulan sabit yang rapi */
+            box-shadow: inset -8px 0 0 0 #f1f2f6;
+        }
 
 
         /* Hero Section */
@@ -252,6 +261,32 @@
             padding: 0 2rem;
         }
 
+        /* Keyframes untuk animasi huruf yang mewah */
+        @keyframes luxuriousLetterReveal {
+            from {
+                opacity: 0;
+                transform: translateY(100%) scale(0.5);
+                filter: blur(2px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        /* Keyframes untuk animasi fade-in dan slide-up (tetap digunakan untuk elemen lain) */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .hero-content {
             /* Tidak perlu properti khusus lagi */
         }
@@ -260,12 +295,28 @@
             font-family: var(--font-judul);
             font-size: 3.5rem;
             margin-bottom: 1rem;
+            /* Hapus flexbox, biarkan teks mengalir normal untuk animasi per huruf */
+        }
+
+        /* Wrapper untuk setiap kata agar tidak terpotong di mobile */
+        .hero-content h1 .word {
+            display: inline-block;
+        }
+
+        /* Styling untuk setiap huruf yang akan dianimasikan oleh JS */
+        .hero-content h1 .letter {
+            display: inline-block;
+            opacity: 0; /* Mulai dari transparan */
+            animation: luxuriousLetterReveal 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
         }
 
         .hero-content p {
             font-size: 1.2rem;
             max-width: 600px;
             margin: 0 auto 2rem;
+            /* Animasi untuk subjudul */
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 1.8s forwards; /* Delay disesuaikan */
         }
 
         .tombol-cta {
@@ -277,6 +328,9 @@
             font-weight: 500;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            /* Animasi untuk tombol */
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 2.0s forwards; /* Delay disesuaikan */
         }
 
         .tombol-cta:hover {
@@ -905,8 +959,9 @@
         /* Animasi saat scroll */
         .animate-on-scroll {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transform: translateY(20px); /* Disesuaikan agar lebih halus & konsisten */
+            /* Menggunakan variabel untuk delay agar lebih fleksibel dan andal */
+            transition: opacity 0.6s ease-out var(--animation-delay, 0s), transform 0.6s ease-out var(--animation-delay, 0s);
         }
 
         .animate-on-scroll.is-visible {
@@ -953,7 +1008,9 @@
         <div class="header-controls">
             <div class="theme-switcher">
                 <input type="checkbox" id="theme-toggle">
-                <label for="theme-toggle"><span></span></label>
+                <label for="theme-toggle">
+                    <div class="thumb"></div>
+                </label>
             </div>
             <button class="hamburger-menu" aria-label="Buka menu">
                 <span></span>
@@ -965,7 +1022,7 @@
 
     <section id="hero" class="hero">
         <div class="hero-content">
-            <h1>Selamat Datang di Rumah Makan Setia Rasa</h1>
+            <h1 id="animated-title">Selamat Datang di Rumah Makan Setia Rasa</h1>
             <p>"Setia Karena Rasa" - Menyajikan hidangan otentik dengan resep turun-temurun yang penuh cinta.</p>
             <a href="#menu" class="tombol-cta">Lihat Menu Spesial</a>
         </div>
@@ -982,24 +1039,24 @@
 
         <section id="tentang" class="container">
             <h2 class="judul-section animate-on-scroll">Cerita Kami</h2>
-            <p class="deskripsi-section animate-on-scroll">Setia Rasa hadir dari cinta pada masakan rumahan. Kami percaya, rasa terbaik lahir dari bahan segar dan ketulusan. Dari dulu hingga nanti, kami setia menyajikan cita rasa yang membuat Anda kembali lagi</p>
+            <p class="deskripsi-section animate-on-scroll" style="--animation-delay: 100ms;">Setia Rasa hadir dari cinta pada masakan rumahan. Kami percaya, rasa terbaik lahir dari bahan segar dan ketulusan. Dari dulu hingga nanti, kami setia menyajikan cita rasa yang membuat Anda kembali lagi</p>
         </section>
 
         <section id="testimoni" class="container">
             <h2 class="judul-section animate-on-scroll">Kata Mereka</h2>
-            <p class="deskripsi-section animate-on-scroll">Lihat apa kata pelanggan setia kami tentang hidangan dan pelayanan di Setia Rasa.</p>
+            <p class="deskripsi-section animate-on-scroll" style="--animation-delay: 100ms;">Lihat apa kata pelanggan setia kami tentang hidangan dan pelayanan di Setia Rasa.</p>
             <div class="testimoni-grid">
                 <div class="testimoni-card animate-on-scroll">
                     <div class="rating">★★★★★</div>
                     <p class="testimoni-teks">"Nasi gorengnya juara! Bumbunya pas, porsinya ngenyangin. Selalu jadi pilihan utama kalau lagi lapar malam-malam. Recommended!"</p>
                     <p class="testimoni-penulis">- Budi Santoso</p>
                 </div>
-                <div class="testimoni-card animate-on-scroll" style="transition-delay: 100ms;">
+                <div class="testimoni-card animate-on-scroll" style="--animation-delay: 150ms;">
                     <div class="rating">★★★★★</div>
                     <p class="testimoni-teks">"Ayam kremesnya renyah banget, sambelnya juga mantap pedasnya. Pelayanannya cepat dan ramah. Pasti balik lagi!"</p>
                     <p class="testimoni-penulis">- Siti Aminah</p>
                 </div>
-                <div class="testimoni-card animate-on-scroll" style="transition-delay: 200ms;">
+                <div class="testimoni-card animate-on-scroll" style="--animation-delay: 300ms;">
                     <div class="rating">★★★★☆</div>
                     <p class="testimoni-teks">"Tempatnya sederhana tapi masakannya luar biasa. Sop nya enak banget dan kuahnya seger. Harganya juga sangat terjangkau."</p>
                     <p class="testimoni-penulis">- Eko Prasetyo</p>
@@ -1009,12 +1066,12 @@
 
         <section id="kontak" class="container">
             <h2 class="judul-section animate-on-scroll">Kunjungi Kami</h2>
-            <p class="deskripsi-section animate-on-scroll">Kami tunggu kedatangan Anda untuk mencicipi langsung kelezatan menu kami. Pesan antar juga tersedia!</p>
-            <p class="animate-on-scroll"><strong>Alamat:</strong> Perumahan Taman Batu Aji Indah 2, Blok N No. 28, Sagulung, Kota Batam, Kepulauan Riau 29444</p>
-            <p class="animate-on-scroll"><strong>WhatsApp:</strong> 0857-6757-1976</p>
-            <p class="animate-on-scroll"><strong>Jam Buka:</strong> Setiap Hari, 16:00 - 00:00</p>
+            <p class="deskripsi-section animate-on-scroll" style="--animation-delay: 100ms;">Kami tunggu kedatangan Anda untuk mencicipi langsung kelezatan menu kami. Pesan antar juga tersedia!</p>
+            <p class="animate-on-scroll" style="--animation-delay: 200ms;"><strong>Alamat:</strong> Perumahan Taman Batu Aji Indah 2, Blok N No. 28, Sagulung, Kota Batam, Kepulauan Riau 29444</p>
+            <p class="animate-on-scroll" style="--animation-delay: 300ms;"><strong>WhatsApp:</strong> 0857-6757-1976</p>
+            <p class="animate-on-scroll" style="--animation-delay: 400ms;"><strong>Jam Buka:</strong> Setiap Hari, 16:00 - 00:00</p>
 
-            <div class="map-container animate-on-scroll">
+            <div class="map-container animate-on-scroll" style="--animation-delay: 500ms;">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.1550423712315!2d103.94229!3d1.044756!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d98d6b6a25f7ed%3A0x99b387a20aab3153!2sSpesial%20Nasi%20Goreng%20Setia%20Rasa!5e0!3m2!1sid!2sid!4v1721378130386!5m2!1sid!2sid" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </section>
@@ -1109,7 +1166,7 @@
 
                 <div class="form-grup">
                     <label>Langkah 2: Pembayaran</label>
-                    <p>Silakan lakukan pembayaran ke QRIS di bawah ini. Setelah itu, klik tombol di bawah untuk mengirim detail pesanan dan konfirmasi pembayaran melalui WhatsApp.</p>
+                    <p>Silahkan lakukan pembayaran ke QRIS di bawah ini. Setelah itu, klik tombol di bawah untuk mengirim detail pesanan dan konfirmasi pembayaran melalui WhatsApp agar pesanan anda segera di proses.</p>
                     <div class="payment-qr-container">
                         <!-- Canvas untuk menggabungkan QRIS dan Logo -->
                         <canvas id="qris-canvas" style="max-width: 250px; width: 100%; height: auto; border-radius: 5px;"></canvas>
@@ -1145,6 +1202,38 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // --- Animasi Judul Mewah (Letter by Letter) ---
+        const animatedTitle = document.getElementById('animated-title');
+        if (animatedTitle) {
+            const originalText = animatedTitle.textContent.trim();
+            const words = originalText.split(' '); // Pecah teks menjadi kata-kata
+            animatedTitle.innerHTML = ''; // Kosongkan judul asli
+
+            let letterIndex = 0; // Indeks global untuk delay animasi
+
+            words.forEach((word, index) => {
+                const wordWrapper = document.createElement('span');
+                wordWrapper.className = 'word'; // Bungkus setiap kata agar tidak pecah
+
+                // Pecah setiap kata menjadi huruf untuk dianimasikan
+                word.split('').forEach(letter => {
+                    const letterSpan = document.createElement('span');
+                    letterSpan.className = 'letter';
+                    letterSpan.textContent = letter;
+                    letterSpan.style.animationDelay = `${letterIndex * 0.04}s`;
+                    wordWrapper.appendChild(letterSpan);
+                    letterIndex++;
+                });
+
+                animatedTitle.appendChild(wordWrapper);
+
+                // Tambahkan spasi biasa setelah setiap kata, kecuali yang terakhir
+                if (index < words.length - 1) {
+                    animatedTitle.appendChild(document.createTextNode(' '));
+                }
+            });
+        }
+
         // --- Konfigurasi ---
         const NOMOR_WHATSAPP = '6285767571976'; // Ganti dengan nomor WhatsApp tujuan
 
