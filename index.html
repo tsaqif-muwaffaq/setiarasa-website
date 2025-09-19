@@ -311,14 +311,13 @@
         }
 
         .hero-content {
-            /* Tidak perlu properti khusus lagi */
+            /* Tidak ada properti khusus yang dibutuhkan di sini */
         }
 
         .hero-content h1 {
             font-family: var(--font-judul);
             font-size: 3.5rem;
             margin-bottom: 1rem;
-            /* Hapus flexbox, biarkan teks mengalir normal untuk animasi per huruf */
         }
 
         /* Wrapper untuk setiap kata agar tidak terpotong di mobile */
@@ -339,7 +338,7 @@
             margin: 0 auto 2rem;
             /* Animasi untuk subjudul */
             opacity: 0;
-            animation: fadeInUp 0.8s ease-out 1.8s forwards; /* Delay disesuaikan */
+            animation: fadeInUp 0.8s ease-out 1.8s forwards; /* Delay agar muncul setelah judul */
         }
 
         .tombol-cta {
@@ -735,18 +734,15 @@
             /* Menghapus gaya 'card' yang berlebihan agar menyatu dengan form utama */
             background: none;
             padding: 0;
-            border: none; /* Hapus border default fieldset */
-            margin: 0; /* Reset margin default fieldset */
+            border: none;
+            margin: 0;
         }
 
-        .form-menu-kategori legend {
+        .form-menu-kategori h4 {
             font-family: var(--font-judul);
             font-size: 1.8rem;
             color: var(--warna-merah);
-            /* Hapus properti yang merusak layout fieldset */
-            width: auto;
-            padding-left: 0;
-            margin-bottom: 0.5rem; /* Jarak dari judul ke garis pemisah */
+            margin: 0 0 0.5rem 0; /* Atur margin untuk konsistensi layout */
         }
 
         .form-menu-items-grid {
@@ -760,16 +756,23 @@
         }
 
         .item-pilihan {
-            display: flex;
+            /* Mengganti flexbox dengan grid untuk penanganan layout yang lebih solid */
+            display: grid;
+            grid-template-columns: auto 1fr auto; /* [checkbox] [label] [input] */
             align-items: center;
             gap: 10px;
             padding: 0.5rem 0;
             border-bottom: 1px dashed var(--border-warna);
+            min-width: 0;
         }
 
         /* Membuat label mengisi ruang agar input jumlah rata kanan */
         .item-pilihan label {
-            flex-grow: 1;
+            /* Kombinasi properti paling kuat untuk memaksa teks turun baris
+               dalam layout grid/flex yang 'bandel' dan mencegah 'blowout'. */
+            overflow-wrap: anywhere;
+            word-break: break-all;
+            min-width: 0;
         }
 
         .item-pilihan input[type="checkbox"] {
@@ -1352,12 +1355,12 @@
             kategoriJudul.textContent = kategori;
             const ul = document.createElement('ul');
 
-            // Membuat fieldset untuk setiap kategori di form pemesanan
-            const formKategoriFieldset = document.createElement('fieldset');
-            formKategoriFieldset.className = 'form-menu-kategori';
-            const formKategoriLegend = document.createElement('legend');
-            formKategoriLegend.textContent = kategori;
-            formKategoriFieldset.appendChild(formKategoriLegend);
+            // Membuat container untuk setiap kategori di form pemesanan (menggantikan fieldset/legend)
+            const formKategoriContainer = document.createElement('div');
+            formKategoriContainer.className = 'form-menu-kategori';
+            const formKategoriJudul = document.createElement('h4');
+            formKategoriJudul.textContent = kategori;
+            formKategoriContainer.appendChild(formKategoriJudul);
 
             // Membuat container untuk item-item di dalam fieldset
             const itemsContainer = document.createElement('div');
@@ -1385,8 +1388,8 @@
             kategoriDiv.appendChild(ul);
             menuGrid.appendChild(kategoriDiv);
 
-            formKategoriFieldset.appendChild(itemsContainer);
-            menuPilihan.appendChild(formKategoriFieldset);
+            formKategoriContainer.appendChild(itemsContainer);
+            menuPilihan.appendChild(formKategoriContainer);
         }
 
         // --- Menu Search & Filter Logic ---
@@ -1414,7 +1417,7 @@
             const activeCategory = categoryFiltersContainer.querySelector('.filter-btn.active').dataset.category;
 
             allMenuCategories.forEach(kategoriDiv => {
-                const kategoriName = kategoriDiv.querySelector('legend').textContent;
+                const kategoriName = kategoriDiv.querySelector('h4').textContent;
                 let isCategoryVisible = false;
 
                 const categoryMatchesFilter = (activeCategory === 'Semua' || kategoriName === activeCategory);
@@ -1430,7 +1433,8 @@
                     const itemMatchesSearch = itemName.includes(searchTerm);
 
                     if (itemMatchesSearch) {
-                        item.style.display = 'flex';
+                        // Menggunakan 'grid' agar konsisten dengan CSS dan mencegah bug layout
+                        item.style.display = 'grid';
                         isCategoryVisible = true;
                     } else {
                         item.style.display = 'none';
