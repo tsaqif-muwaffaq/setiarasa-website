@@ -1,73 +1,81 @@
+# 🍽️ Setia Rasa Web
 
-# 🍽️ Setia Rasa Website  
-
-Website resmi **Setia Rasa**, sebuah restoran yang menyajikan hidangan lezat dengan cita rasa khas. Website ini dibangun untuk memberikan informasi menu, lokasi, dan layanan pemesanan online secara mudah dan cepat.  
-
-🌐 **Live Demo:** [setiarasa-website.vercel.app](https://setiarasa-website.vercel.app)  
+**Setia Rasa Web** adalah website restoran berbasis **multi-page** yang menampilkan profil, menu, informasi kontak, serta fitur pemesanan online melalui **WhatsApp**. Website ini dibuat oleh **Tsaqif Muwaffaq** menggunakan teknologi **HTML, CSS, dan JavaScript**, dengan struktur file yang terorganisir dan mudah dikembangkan.
 
 ---
 
-## 🚀 Fitur Utama  
-- ✅ **Halaman Utama (Home)** – Tampilan menarik dan informatif.  
-- ✅ **Daftar Menu** – Menampilkan berbagai hidangan lengkap dengan harga.  
-- ✅ **Tentang Kami (About)** – Informasi singkat tentang restoran.  
-- ✅ **Kontak & Lokasi** – Google Maps & kontak pemesanan.  
-- ✅ **Responsive Design** – Optimal di desktop & mobile.  
+## 📁 Struktur Folder
 
----
-
-## 🛠️ Teknologi yang Digunakan  
-- **Frontend:** HTML5, CSS3, JavaScript  
-- **Framework:** Tailwind CSS / Bootstrap *(opsional jika digunakan)*  
-- **Hosting:** [Vercel](https://vercel.com/)  
-
----
-
-## 📂 Struktur Proyek  
 ```
-├── index.html          # Halaman utama
-├── about.html          # Halaman tentang kami
-├── menu.html           # Halaman menu makanan
-├── contact.html        # Halaman kontak & lokasi
-├── /assets             # Gambar, logo, ikon
-├── /css                # File CSS
-├── /js                 # File JavaScript
-└── README.md           # Dokumentasi proyek
+setiarasa-web/
+├─ index.html # Halaman Beranda
+├─ menu.html # Daftar Menu
+├─ tentang.html # Tentang Kami
+├─ pesan.html # Pemesanan Online
+├─ kontak.html # Kontak & Lokasi
+├─ assets/
+│ ├─ css/
+│ │ └─ styles.css # File CSS utama
+│ ├─ js/
+│ │ └─ script.js # File JavaScript utama
+│ └─ img/
+│ └─ setiarasa-logo-removebg-preview.png # Logo & gambar lainnya
+
 ```
+yaml
+Copy code
 
 ---
 
-## 🔧 Cara Menjalankan Proyek Secara Lokal  
-1. Clone repository ini:  
-   ```bash
-   git clone https://github.com/username/setiarasa-website.git
-   ```
-2. Masuk ke folder proyek:  
-   ```bash
-   cd setiarasa-website
-   ```
-3. Buka file `index.html` di browser.  
+## ✨ Fitur Utama
+
+- 🌐 **Multi-page Website** – Halaman terpisah: Beranda, Menu, Tentang Kami, Kontak, dan Pemesanan Online.
+- 🍔 **Menu Dinamis** – Ditampilkan menggunakan JavaScript agar mudah diperbarui.
+- 📱 **Pemesanan via WhatsApp** – Pengunjung dapat memesan langsung melalui WhatsApp.
+- 🧭 **Navigasi Terhubung** – Semua halaman saling terhubung melalui navbar.
+- 🎨 **Tampilan Responsif & Animasi Halus** – Desain nyaman di desktop dan mobile.
+- ⚡ **Struktur Modular** – File CSS, JS, dan gambar terpisah untuk memudahkan pengembangan.
 
 ---
 
-## 🌍 Deployment  
-Website ini dideploy menggunakan **Vercel**. Untuk update:  
+## 🚀 Cara Menjalankan Proyek
+
+1. Unduh atau clone repository ini:
+   ```bash
+   git clone https://github.com/username/setiarasa-web.git
+Masuk ke folder proyek:
+
 ```bash
-git add .
-git commit -m "Update konten website"
-git push origin main
-```
-Vercel akan otomatis build & deploy.  
+Copy code
+cd setiarasa-web
+Jalankan proyek dengan membuka index.html di browser:
 
----
+Klik dua kali index.html
 
-## 📞 Kontak  
-📍 **Alamat:** Perumahan Taman Batu Aji Indah 2, Blok N No. 28, Jl. Brigjen Katamso, Sagulung Kota, Sagulung,    Sagulung Kota, Kec. Sagulung, Kota Batam, Kepulauan Riau 29444 <br>
-📞 **Telepon:** 085767571976 <br>
-📧 **Email:** setiarasa@email.com  
-🌐 **Website:** [setiarasa-website.vercel.app](https://setiarasa-website.vercel.app)  
+Atau gunakan ekstensi Live Server (VSCode) untuk pengalaman terbaik.
 
----
+🔧 Kustomisasi:
 
-## 📜 Lisensi  
-Proyek ini bersifat **Open Source** dan dapat dimodifikasi sesuai kebutuhan.  
+✏️ Mengubah Daftar Menu:
+Edit file assets/js/script.js untuk menambahkan atau menghapus menu.
+
+🖼️ Mengganti Logo / Gambar:
+Ganti file di assets/img/ dengan gambar baru (pastikan nama file sama).
+
+📞 Mengubah Nomor WhatsApp:
+Buka assets/js/script.js atau pesan.html, lalu ubah URL WhatsApp menjadi milik Anda.
+
+📬 Kontak
+📍 Setia Rasa
+👤 Pengembang: Tsaqif Muwaffaq
+📞 WhatsApp: 085767571976
+✉️ Email: info@setiarasa.com (opsional)
+
+🛠️ Teknologi yang Digunakan
+HTML5
+
+CSS3
+
+JavaScript (Vanilla)
+
+© 2025 Setia Rasa — All Rights Reserved.
