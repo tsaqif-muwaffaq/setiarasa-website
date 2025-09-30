@@ -680,6 +680,8 @@
             border-radius: 8px;
             box-shadow: 0 4px 15px var(--bayangan);
             text-align: left;
+            /* Mencegah form meluber di layar kecil */
+            box-sizing: border-box;
             max-width: 800px;
             margin: 2rem auto 0;
         }
@@ -713,6 +715,8 @@
             font-size: 1rem;
             box-sizing: border-box;
             background-color: var(--latar-belakang);
+            /* Mencegah input meluber dari parent-nya */
+            max-width: 100%;
             color: var(--warna-dasar);
         }
 
@@ -1039,5 +1043,13 @@
         .animate-on-scroll.is-visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* Tambahan: Perbaikan spesifik untuk form di layar sangat kecil (iPhone) */
+        @media (max-width: 480px) {
+            .form-menu-items-grid {
+                /* Ubah menjadi 1 kolom agar tidak overflow */
+                grid-template-columns: 1fr;
+            }
         }
     
