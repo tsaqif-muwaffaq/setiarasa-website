@@ -371,6 +371,15 @@
             max-width: 700px;
             margin: 0 auto 3rem;
         }
+        
+        /* FIXED: [Layout] Memastikan section mengisi ruang untuk halaman dengan konten pendek */
+        .page-tentang main section,
+        .page-kontak main section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex-grow: 1;
+        }
 
         /* Menu Section */
         .menu-grid {
