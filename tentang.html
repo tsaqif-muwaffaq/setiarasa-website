@@ -1,17 +1,36 @@
 <!doctype html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tentang | Setia Rasa</title>
-<link rel="icon" href="setiarasa-web/assets/img/setiarasa-logo-removebg-preview.png">
-<!-- Google Fonts: Cormorant Garamond untuk Judul & Lato untuk Isi -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="setiarasa-web/assets/css/styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Tentang | Setia Rasa</title>
+    <!-- FIXED: [SEO] Menambahkan meta description unik untuk halaman tentang -->
+    <meta name="description" content="Kenali lebih dekat Rumah Makan Setia Rasa. Pelajari cerita, nilai, dan komitmen kami dalam menyajikan masakan nusantara terbaik di Batam.">
+    <!-- FIXED: [SEO] Menambahkan meta keywords -->
+    <meta name="keywords" content="tentang setia rasa, sejarah restoran, kuliner batam, masakan rumahan">
+    <!-- FIXED: [Security] Menghapus meta CSP, akan dikelola oleh vercel.json -->
+    <link rel="icon" href="setiarasa-web/assets/img/setiarasa-logo-removebg-preview.png?v=1.0.9">
+    <!-- Google Fonts: Cormorant Garamond untuk Judul & Lato untuk Isi -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Lato:wght@400;700&display=swap?v=1.0.9" rel="stylesheet">
+    <link rel="stylesheet" href="setiarasa-web/assets/css/styles.css?v=1.0.9">
+    <!-- FIXED: [SEO] Menambahkan JSON-LD Schema.org untuk halaman tentang -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "name": "Tentang Rumah Makan Setia Rasa"
+    }
+    </script>
 </head>
 <body class="page-tentang">
+<!-- Page Loader -->
+<div class="page-loader active">
+        <img src="setiarasa-web/assets/img/setiarasa-logo-removebg-preview.png?v=1.0.9" alt="Logo Setia Rasa" class="loader-logo">
+    <div class="loader-spinner"></div>
+</div>
+
 <!-- Tombol Kembali Melayang -->
     <a href="javascript:history.back()" class="tombol-kembali-floating" aria-label="Kembali ke halaman sebelumnya">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
@@ -21,7 +40,7 @@
         <a href="index.html" class="logo">
             <!-- GANTI URL DI BAWAH DENGAN PATH FILE LOGO ANDA -->
             <!-- Contoh: <img src="images/logo.png" alt="Logo Setia Rasa"> -->
-            <img src="setiarasa-web/assets/img/setiarasa-logo-removebg-preview.png" alt="Logo Rumah Makan Setia Rasa">
+            <img src="setiarasa-web/assets/img/setiarasa-logo-removebg-preview.png?v=1.0.9" alt="Logo Rumah Makan Setia Rasa">
             <span>Setia Rasa</span>
         </a>
         <nav class="navigasi">
@@ -54,9 +73,11 @@
             </a>
         </nav>
         <div class="header-controls">
+            <!-- FIXED: [A11y] Menambahkan label, name, dan title untuk theme-switcher -->
             <div class="theme-switcher">
-                <input type="checkbox" id="theme-toggle">
-                <label for="theme-toggle">
+                <label for="theme-toggle" class="sr-only">Beralih mode terang/gelap</label>
+                <input type="checkbox" id="theme-toggle" name="theme-toggle" title="Beralih mode terang/gelap" aria-label="Beralih mode terang/gelap">
+                <label for="theme-toggle" class="visual-label" aria-hidden="true">
                     <div class="thumb"></div>
                 </label>
             </div>
@@ -67,10 +88,13 @@
             </button>
         </div>
     </header>
-<section id="tentang" class="container">
-            <h2 class="judul-section animate-on-scroll">Cerita Kami</h2>
-            <p class="deskripsi-section animate-on-scroll" style="--animation-delay: 100ms;">Setia Rasa hadir dari cinta pada masakan rumahan. Kami percaya, rasa terbaik lahir dari bahan segar dan ketulusan. Dari dulu hingga nanti, kami setia menyajikan cita rasa yang membuat Anda kembali lagi</p>
-        </section>
+<!-- FIXED: [Best Practice] Menggunakan elemen <main> untuk konten utama -->
+<main>
+    <section id="tentang" class="container">
+            <!-- FIXED: [SEO] Mengganti h2 menjadi h1 untuk judul utama halaman -->
+            <h1 class="judul-section animate-on-scroll">Cerita Kami</h1>
+            <p class="deskripsi-section animate-on-scroll delay-100ms">Setia Rasa hadir dari cinta pada masakan rumahan. Kami percaya, rasa terbaik lahir dari bahan segar dan ketulusan. Dari dulu hingga nanti, kami setia menyajikan cita rasa yang membuat Anda kembali lagi</p>
+        </section></main>
 <!-- Tombol WhatsApp Mengambang -->
 <a href="#" id="whatsapp-floating-btn" class="whatsapp-floating-btn" target="_blank" aria-label="Hubungi kami via WhatsApp">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
@@ -87,6 +111,6 @@
                 Beri Saran & Kritik
             </a>
         </div>
-    </footer><script src="setiarasa-web/assets/js/script.js"></script>
+    </footer><script src="setiarasa-web/assets/js/script.js?v=1.0.9" defer></script>
 </body>
 </html>

@@ -1,17 +1,36 @@
 <!doctype html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Testimoni | Setia Rasa</title>
-<link rel="icon" href="setiarasa-web/assets/img/setiarasa-logo-removebg-preview.png">
-<!-- Google Fonts: Cormorant Garamond untuk Judul & Lato untuk Isi -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="setiarasa-web/assets/css/styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Testimoni | Setia Rasa</title>
+    <!-- FIXED: [SEO] Menambahkan meta description unik untuk halaman testimoni -->
+    <meta name="description" content="Baca apa kata pelanggan setia kami tentang masakan dan pelayanan di Rumah Makan Setia Rasa. Ulasan jujur dari para penikmat kuliner.">
+    <!-- FIXED: [SEO] Menambahkan meta keywords -->
+    <meta name="keywords" content="testimoni setia rasa, ulasan restoran batam, review makanan, pelanggan setia rasa">
+    <!-- FIXED: [Security] Menghapus meta CSP, akan dikelola oleh vercel.json -->
+    <link rel="icon" href="setiarasa-web/assets/img/setiarasa-logo-removebg-preview.png?v=1.0.9">
+    <!-- Google Fonts: Cormorant Garamond untuk Judul & Lato untuk Isi -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Lato:wght@400;700&display=swap?v=1.0.9" rel="stylesheet">
+    <link rel="stylesheet" href="setiarasa-web/assets/css/styles.css?v=1.0.9">
+    <!-- FIXED: [SEO] Menambahkan JSON-LD Schema.org untuk halaman testimoni -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Testimoni Pelanggan Setia Rasa"
+    }
+    </script>
 </head>
 <body class="page-testimoni">
+<!-- Page Loader -->
+<div class="page-loader active">
+    <img src="setiarasa-web/assets/img/setiarasa-logo-removebg-preview.png?v=1.0.9" alt="Logo Setia Rasa" class="loader-logo">
+    <div class="loader-spinner"></div>
+</div>
+
 <!-- Tombol Kembali Melayang -->
     <a href="javascript:history.back()" class="tombol-kembali-floating" aria-label="Kembali ke halaman sebelumnya">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
@@ -19,7 +38,7 @@
 
 <header class="header">
         <a href="index.html" class="logo">
-            <img src="setiarasa-web/assets/img/setiarasa-logo-removebg-preview.png" alt="Logo Rumah Makan Setia Rasa">
+            <img src="setiarasa-web/assets/img/setiarasa-logo-removebg-preview.png?v=1.0.9" alt="Logo Rumah Makan Setia Rasa">
             <span>Setia Rasa</span>
         </a>
         <nav class="navigasi">
@@ -52,9 +71,11 @@
             </a>
         </nav>
         <div class="header-controls">
+            <!-- FIXED: [A11y] Menambahkan label, name, dan title untuk theme-switcher -->
             <div class="theme-switcher">
-                <input type="checkbox" id="theme-toggle">
-                <label for="theme-toggle">
+                <label for="theme-toggle" class="sr-only">Beralih mode terang/gelap</label>
+                <input type="checkbox" id="theme-toggle" name="theme-toggle" title="Beralih mode terang/gelap" aria-label="Beralih mode terang/gelap">
+                <label for="theme-toggle" class="visual-label" aria-hidden="true">
                     <div class="thumb"></div>
                 </label>
             </div>
@@ -66,32 +87,36 @@
         </div>
     </header>
 
-<section id="testimoni" class="container">
-    <h2 class="judul-section animate-on-scroll">Kata Mereka</h2>
-    <p class="deskripsi-section animate-on-scroll" style="--animation-delay: 100ms;">Lihat apa kata pelanggan setia kami tentang hidangan dan pelayanan di Setia Rasa.</p>
-    <div class="testimoni-grid">
-        <div class="testimoni-card animate-on-scroll">
-            <div class="rating">★★★★★</div>
-            <p class="testimoni-teks">"Nasi gorengnya juara! Bumbunya pas, porsinya ngenyangin. Selalu jadi pilihan utama kalau lagi lapar malam-malam. Recommended!"</p>
-            <p class="testimoni-penulis">- Budi Santoso</p>
+<!-- FIXED: [Best Practice] Menggunakan elemen <main> untuk konten utama -->
+<main>
+    <section id="testimoni" class="container">
+        <!-- FIXED: [SEO] Mengganti h2 menjadi h1 untuk judul utama halaman -->
+        <h1 class="judul-section animate-on-scroll">Kata Mereka</h1>
+        <p class="deskripsi-section animate-on-scroll delay-100ms">Lihat apa kata pelanggan setia kami tentang hidangan dan pelayanan di Setia Rasa.</p>
+        <div class="testimoni-grid">
+            <div class="testimoni-card animate-on-scroll">
+                <div class="rating" aria-label="5 dari 5 bintang">★★★★★</div>
+                <p class="testimoni-teks">"Nasi gorengnya juara! Bumbunya pas, porsinya ngenyangin. Selalu jadi pilihan utama kalau lagi lapar malam-malam. Recommended!"</p>
+                <p class="testimoni-penulis">- Budi Santoso</p>
+            </div>
+            <div class="testimoni-card animate-on-scroll delay-150ms">
+                <div class="rating" aria-label="5 dari 5 bintang">★★★★★</div>
+                <p class="testimoni-teks">"Ayam kremesnya renyah banget, sambelnya juga mantap pedasnya. Pelayanannya cepat dan ramah. Pasti balik lagi!"</p>
+                <p class="testimoni-penulis">- Siti Aminah</p>
+            </div>
+            <div class="testimoni-card animate-on-scroll delay-300ms">
+                <div class="rating" aria-label="5 dari 5 bintang">★★★★★</div>
+                <p class="testimoni-teks">"Tempatnya sederhana tapi masakannya luar biasa. Sop nya enak banget dan kuahnya seger. Harganya juga sangat terjangkau."</p>
+                <p class="testimoni-penulis">- Eko Prasetyo</p>
+            </div>
+            <div class="testimoni-card animate-on-scroll delay-450ms">
+                <div class="rating" aria-label="5 dari 5 bintang">★★★★★</div>
+                <p class="testimoni-teks">"Bebek cabe ijonya nendang banget! Dagingnya empuk, bumbunya meresap. Salah satu bebek terenak di Batam. Pesan antar juga cepat sampai."</p>
+                <p class="testimoni-penulis">- Rina Wulandari</p>
+            </div>
         </div>
-        <div class="testimoni-card animate-on-scroll" style="--animation-delay: 150ms;">
-            <div class="rating">★★★★★</div>
-            <p class="testimoni-teks">"Ayam kremesnya renyah banget, sambelnya juga mantap pedasnya. Pelayanannya cepat dan ramah. Pasti balik lagi!"</p>
-            <p class="testimoni-penulis">- Siti Aminah</p>
-        </div>
-        <div class="testimoni-card animate-on-scroll" style="--animation-delay: 300ms;">
-            <div class="rating">★★★★★</div>
-            <p class="testimoni-teks">"Tempatnya sederhana tapi masakannya luar biasa. Sop nya enak banget dan kuahnya seger. Harganya juga sangat terjangkau."</p>
-            <p class="testimoni-penulis">- Eko Prasetyo</p>
-        </div>
-        <div class="testimoni-card animate-on-scroll" style="--animation-delay: 450ms;">
-            <div class="rating">★★★★★</div>
-            <p class="testimoni-teks">"Bebek cabe ijonya nendang banget! Dagingnya empuk, bumbunya meresap. Salah satu bebek terenak di Batam. Pesan antar juga cepat sampai."</p>
-            <p class="testimoni-penulis">- Rina Wulandari</p>
-        </div>
-    </div>
-</section>
+    </section>
+</main>
 
 <!-- Tombol WhatsApp Mengambang -->
 <a href="#" id="whatsapp-floating-btn" class="whatsapp-floating-btn" target="_blank" aria-label="Hubungi kami via WhatsApp">
@@ -110,6 +135,6 @@
         </a>
     </div>
 </footer>
-<script src="setiarasa-web/assets/js/script.js"></script>
+<script src="setiarasa-web/assets/js/script.js?v=1.0.9" defer></script>
 </body>
 </html>

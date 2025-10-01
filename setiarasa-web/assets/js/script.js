@@ -1,4 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
+        // --- Page Loader Logic ---
+        const pageLoader = document.querySelector('.page-loader');
+
+        // Sembunyikan loader saat halaman selesai dimuat
+        window.addEventListener('load', () => {
+            if (pageLoader) {
+                pageLoader.classList.remove('active');
+            }
+        });
+
         // --- Animasi Judul Mewah (Letter by Letter) ---
         const animatedTitle = document.getElementById('animated-title');
         if (animatedTitle) {
@@ -157,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
             for (const kategori in menuData) {
                 const formKategoriContainer = document.createElement('div');
                 formKategoriContainer.className = 'form-menu-kategori';
-                const formKategoriJudul = document.createElement('h4');
+                const formKategoriJudul = document.createElement('h3'); // Perbaikan: Menggunakan h3 untuk hirarki heading yang benar (h2 -> h3)
                 formKategoriJudul.textContent = kategori;
                 formKategoriContainer.appendChild(formKategoriJudul);
 
@@ -168,10 +178,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     const itemPilihanDiv = document.createElement('div');
                     itemPilihanDiv.className = 'item-pilihan';
                     const uniqueId = `item${itemIdCounter++}`;
+                    const itemName = item.name;
                     itemPilihanDiv.innerHTML = `
-                        <input type="checkbox" id="${uniqueId}" value="${item.name}" data-price="${item.price}">
-                        <label for="${uniqueId}">${item.name}</label>
-                        <input type="number" min="1" value="1" style="display: none;">
+                        <input type="checkbox" id="${uniqueId}" name="${uniqueId}" value="${itemName}" data-price="${item.price}">
+                        <label for="${uniqueId}">${itemName}</label>
+                        <input type="number" id="jumlah-${uniqueId}" name="jumlah-${uniqueId}" min="1" value="1" style="display: none;" aria-label="Jumlah untuk ${itemName}">
                     `;
                     itemsContainer.appendChild(itemPilihanDiv);
                 });
@@ -192,6 +203,14 @@ document.addEventListener('DOMContentLoaded', function() {
             // 1. Generate Filter Buttons
             const categories = ['Semua', ...Object.keys(menuData)];
             categories.forEach(category => {
+                // Perbaikan: Menambahkan label untuk grup filter demi aksesibilitas
+                if (category === 'Semua') {
+                    const filterLabel = document.createElement('label');
+                    filterLabel.id = 'filter-label';
+                    filterLabel.className = 'sr-only'; // Class untuk menyembunyikan label secara visual
+                    filterLabel.textContent = 'Filter menu berdasarkan kategori';
+                    categoryFiltersContainer.insertAdjacentElement('beforebegin', filterLabel);
+                }
                 const btn = document.createElement('button');
                 btn.type = 'button'; // Mencegah form terkirim saat diklik
                 btn.className = 'filter-btn';
@@ -209,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const activeCategory = categoryFiltersContainer.querySelector('.filter-btn.active').dataset.category;
 
                 allMenuCategories.forEach(kategoriDiv => {
-                    const kategoriName = kategoriDiv.querySelector('h4').textContent;
+                    const kategoriName = kategoriDiv.querySelector('h3').textContent; // Perbaikan: Mencari h3
                     let isCategoryVisible = false;
 
                     const categoryMatchesFilter = (activeCategory === 'Semua' || kategoriName === activeCategory);
@@ -284,13 +303,42 @@ document.addEventListener('DOMContentLoaded', function() {
             navMenu.classList.toggle('open');
             document.body.classList.toggle('no-scroll');
         });
-        document.querySelectorAll('.navigasi a').forEach(link => {
+
+        // --- Penanganan Klik Link Navigasi (Logika Tunggal & Final) ---
+        // Menangani SEMUA link di halaman untuk page loader dan menu mobile.
+        document.querySelectorAll('a[href]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // 1. Jika link ada di dalam navigasi, selalu tutup menu mobile
+                if (this.closest('.navigasi')) {
+                    hamburger.classList.remove('open');
+                    navMenu.classList.remove('open');
+                    document.body.classList.remove('no-scroll');
+                }
+
+                // 2. Cek apakah link ini harus memicu page loader
+                const href = this.getAttribute('href');
+                const isNavigational = href && !href.startsWith('#') && !href.startsWith('javascript:') && !href.startsWith('tel:') && !href.startsWith('mailto:') && this.target !== '_blank' && !this.hasAttribute('download');
+
+                if (isNavigational) {
+                    e.preventDefault(); // Hentikan navigasi default HANYA untuk link navigasi
+                    const destination = this.href;
+                    if (pageLoader) {
+                        pageLoader.classList.add('active'); // Tampilkan loader
+                    }
+                    // Tunggu animasi, lalu pindah halaman
+                    setTimeout(() => { window.location.href = destination; }, 500);
+                }
+            });
+        });
+
+        // Hapus blok kode lama yang hanya menutup menu
+        /* document.querySelectorAll('.navigasi a').forEach(link => {
             link.addEventListener('click', () => {
                 hamburger.classList.remove('open');
                 navMenu.classList.remove('open');
                 document.body.classList.remove('no-scroll');
             });
-        });
+        }); */
 
         // --- Total Calculation Logic ---
         const totalHargaEl = document.getElementById('total-harga');
@@ -382,6 +430,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else if (selectedOption === 'Makan di Tempat') {
                     nomorMejaGrup.style.display = 'block';
                     nomorMejaSelect.required = true;
+                }
+            });
+
+            // Perbaikan: Menambahkan event listener untuk keyboard pada option cards
+            orderOptionsContainer.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.target.click();
                 }
             });
         }
