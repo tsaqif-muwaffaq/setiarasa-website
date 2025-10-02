@@ -1,13 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
         // --- Page Loader Logic ---
         const pageLoader = document.querySelector('.page-loader');
-
-        // Sembunyikan loader saat halaman selesai dimuat
-        window.addEventListener('load', () => {
+        
+        function hideLoader() {
             if (pageLoader) {
                 pageLoader.classList.remove('active');
             }
-        });
+        }
+
+        // Sembunyikan loader saat halaman selesai dimuat (untuk navigasi normal)
+        window.addEventListener('load', hideLoader);
+
+        // Sembunyikan loader saat halaman dipulihkan dari bfcache (saat menekan tombol kembali)
+        window.addEventListener('pageshow', hideLoader);
 
         // --- Animasi Judul Mewah (Letter by Letter) ---
         const animatedTitle = document.getElementById('animated-title');
